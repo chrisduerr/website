@@ -150,3 +150,22 @@ body,html {
 	padding: 5px 15px 15px 15px !important;
 	width: 100% !important;
 }
+
+
+/* MODAL POPUP */
+.modal-content {
+	background-color: #141414 !important;
+	color: #AAA !important;
+}
+
+.modal-header {
+	border-color: black !important;
+}
+
+.modal-body > .btn {
+	background-image: none !important;
+	background-color: #202020 !important;
+	border-color: black !important;
+	color: #AAA !important;
+	text-shadow: none !important;
+}
