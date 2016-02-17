@@ -1,0 +1,29 @@
+/* GENERAL PAGE BODY */
+
+body,html {
+	background-color: #141414 !important;
+	color: #AAA !important;
+
+	padding: 20px !important;
+	font-size: 18px !important;
+}
+
+h2, h3 {
+	font-weight: bold !important;
+}
+
+h2 {
+	font-size: 35px !important;
+}
+
+h3 {
+	font-size: 30px !important;
+}
+
+.row {
+	margin: 0px !important;
+}
+
+.anschrift {
+	padding-bottom: 20px !important;
+}
