@@ -25,11 +25,15 @@ body,html {
 	align-items: center !important;
 }
 
+.intro > .row > .img > img {
+	width: 100% !important;
+	max-width: 400px !important;
+}
 
 /* INTRODUCTION SCREEN */
 
 .intro {
-	padding: 200px !important;
+	padding: 50px !important;
 }
 
 .intro-row {
@@ -102,6 +106,11 @@ body,html {
 .project-img > a > img {
 	width: 100% !important;
 	height: 100% !important;
+}
+
+.project-img {
+	max-width: 300px !important;
+	min-width: 200px !important;
 }
 
 .project-content {
