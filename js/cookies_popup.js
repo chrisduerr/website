@@ -12,7 +12,7 @@ function open_popup() {
 
 function check_for_popup() {
 	var cookie_name = "has_seen_cookie_notifier=";
-	var my_cookie = document.cookie.indexOf('; ' + cookie_name);
+	var my_cookie = document.cookie.indexOf(cookie_name);
 	if (my_cookie == -1)
 		open_popup();
 }
