@@ -17,19 +17,19 @@ function check_for_popup() {
 		open_popup();
 }
 
-var $text = $('#text');
+var $text = $('#intro-content');
 $text.css({ height: 'auto' });
 var height = $text.css('height');
 $text.css({ height: '' });
 
 var style = document.createElement('style');
 style.type = 'text/css';
-style.innerHTML = '#text.show { height: ' + height + ' }';
+style.innerHTML = '#intro-content.show { height: ' + height + ' }';
 document.getElementsByTagName('head')[0].appendChild(style);
 
 document.getElementById("intro-img").onclick=function() {
   $("#intro-img").toggleClass('show');
-  $("#text").toggleClass('show');
+  $("#intro-content").toggleClass('show');
 };
 
 $(document).ready(function() {
