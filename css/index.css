@@ -1,184 +1,54 @@
-/* GENERAL PAGE BODY */
-
-body,html {
-	background-color: #141414 !important;
-	color: #AAA !important;
-
-	width: 100% !important;
-	height: 100% !important;
-	margin: 0 !important;
+body {
+  background-color: #121212;
+  color: #a0a0a0;
+  font-family: 'Open sans';
+  font-weight: 600;
+  font-size: 16px;
 }
 
-.full-tile {
-	height: 100% !important;
-	width: 100% !important;
-	position: relative !important;
-	-webkit-background-size: cover !important;
-	-moz-background-size: cover !important;
-	-o-background-size: cover !important;
-	background-size: cover !important;
-	vertical-align: center !important;
+.full-size {
+  height: 100vh;
+  overflow: hidden;
 }
 
-.vertical-center {
-	display: flex !important;
-	align-items: center !important;
+.container {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-.intro > .row > .img > img {
-	width: 100% !important;
-	max-width: 400px !important;
+.row {
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-/* INTRODUCTION SCREEN */
-
-.intro {
-	padding: 50px !important;
+#intro-img {
+  cursor:pointer;
+  height: 250px;
+  
+  transition: all 0.75s linear;
 }
 
-.intro-row {
-	height: 100% !important;
+#intro-img.show {
+  height: 125px;
 }
 
-.img {
-	text-align: center !important;
+#intro-content {
+  opacity: 0;
+  height: 0;
+  transition: all 0.75s linear;
+  overflow: hidden;
 }
 
-.intro-heading {
-	margin-top: 0px !important;
-	font-size: 45px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 600 !important;
+#intro-content.show {
+  opacity: 1;
 }
 
-.intro-content {
-	font-size: 16px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 600 !important;
-}
-
-
-/* CONTACT SCREEN */
-
-.contact {
-	text-align: center !important;
-	padding: 50px !important;
-}
-
-.contact-row {
-	height: 100% !important;
-}
-
-.contact-heading {
-	margin-top: 0px !important;
-	font-size: 45px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 600 !important;
-}
-
-.contact-heading small {
-	font-size: 15px !important;
-}
-
-.contact-content {
-	font-size: 16px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 600 !important;
-}
-
-.vert-align-container {
-	width: 100% !important;
-}
-
-.social-media > a {
-	font-size: 30px !important;
-	color: #E51414 !important;
-}
-
-
-/* PROJECTS SCREEN */
-
-.projects-container {
-	width: 100% !important;
-	padding: 50px 10% 50px 10% !important;
-}
-
-.project-img > a > img {
-	width: 100% !important;
-	height: 100% !important;
-}
-
-.project-img {
-	max-width: 300px !important;
-	min-width: 200px !important;
-}
-
-.project-content {
-	font-size: 14px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 600 !important;
-}
-
-.project-heading {
-	margin-top: 0px !important;
-	font-size: 25px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 600 !important;
-}
-
-.project {
-	padding: 20px 5px 20px 5px !important;
-}
-
-.status, .platform-field {
-	font-size: 16px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 800 !important;
-	margin-bottom: 0px !important;
-}
-
-.platform {
-	font-size: 16px !important;
-	font-family: 'Open sans' !important;
-	font-weight: 300 !important;
-}
-
-.status-ok {
-	color: green !important;
-}
-
-.status-warning {
-	color: yellow !important;
-}
-
-.status-error {
-	color: red !important;
+.modal-footer, .modal, .btn-flat {
+  background-color: #121212 !important;
+  color: #a0a0a0 !important;
 }
 
 .legal-notice {
-	padding: 5px 15px 15px 15px !important;
-	width: 100% !important;
-}
-
-
-/* MODAL POPUP */
-.modal-content {
-	background-color: #141414 !important;
-	color: #AAA !important;
-}
-
-.modal-header {
-	border-color: black !important;
-}
-
-.modal-body {
-	padding: 5px 0 5px 0 !important;
-}
-
-.modal-body > .btn {
-	background-image: none !important;
-	background-color: #202020 !important;
-	border-color: black !important;
-	color: #AAA !important;
-	text-shadow: none !important;
+  padding: 5px;
 }
