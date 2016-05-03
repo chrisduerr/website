@@ -6,6 +6,12 @@ body {
   font-size: 16px;
 }
 
+@media all and (max-device-width: 600px) {
+    body {
+        font-size: 12px;
+    }
+}
+
 .full-size {
   height: 100vh;
   overflow: hidden;
@@ -24,13 +30,22 @@ body {
 
 #intro-img {
   cursor:pointer;
-  height: 250px;
-  
+  width: 50vh;  
   transition: all 0.75s linear;
 }
 
 #intro-img.show {
-  height: 125px;
+    width: 15vh;
+}
+
+@media all and (orientation: portrait) {
+    #intro-img {
+        width: 50vw;
+    }
+
+    #intro-img.show {
+        width: 15vw;
+    }
 }
 
 #intro-content {
