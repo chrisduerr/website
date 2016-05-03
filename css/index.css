@@ -53,6 +53,7 @@ body {
   height: 0;
   transition: all 0.75s linear;
   overflow: hidden;
+  padding: 10px;
 }
 
 #intro-content.show {
