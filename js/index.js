@@ -17,21 +17,21 @@ function check_for_popup() {
 		open_popup();
 }
 
-var $text = $('#intro-content');
-$text.css({ height: 'auto' });
-var height = $text.css('height');
-$text.css({ height: '' });
-
-var style = document.createElement('style');
-style.type = 'text/css';
-style.innerHTML = '#intro-content.show { height: ' + height + ' }';
-document.getElementsByTagName('head')[0].appendChild(style);
-
 document.getElementById("intro-img").onclick=function() {
   $("#intro-img").toggleClass('show');
   $("#intro-content").toggleClass('show');
 };
 
 $(document).ready(function() {
+    var $text = $('#intro-content');
+    $text.css({ height: 'auto' });
+    var height = $text.css('height');
+    $text.css({ height: '' });
+
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = '#intro-content.show { height: ' + height + ' }';
+    document.getElementsByTagName('head')[0].appendChild(style);
+
     check_for_popup();
 });
