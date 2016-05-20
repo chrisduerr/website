@@ -1,19 +1,17 @@
 from flask import Flask, render_template, send_from_directory, request
-from os import path
 
 import os
-import pymongo
+import redis
 import logging
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 
-MONGO_URL = os.environ.get('MONGO_URL')
-db = pymongo.MongoClient(MONGO_URL).uldotcom
+REDIS_URL = os.environ.get('REDIS_URL')
+db = redis.Redis.from_url(REDIS_URL, decode_responses=True)
 
 @app.route("/")
 def index():
-    intro_cursor = db.content.find({"intro": {"$exists": "true"}})
-    intro_content = intro_cursor.next()['intro']
+    intro_content = db.get('intro-content')
     return render_template("index.html", intro_content=intro_content)
 
 @app.route("/sitemap.xml")

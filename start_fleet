@@ -1,9 +1,9 @@
 #!/bin/bash
 
 docker stop undeadleech.com && docker rm undeadleech.com
-docker stop mongo && docker rm mongo
+docker stop redis && docker rm redis
 docker stop nginx && docker rm nginx
 
 docker run -d --name nginx --restart="always" -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
-docker run -d --name mongo --restart="always" mongo --storageEngine wiredTiger
-docker run -d --name undeadleech.com --restart="always" --link mongo:mongo --env-file envfile.list undeadleech/undeadleech.com
+docker run -d --name redis --restart="always" -v /home/undeadleech/undeadleech.com/data:/data redis redis-server --appendonly yes
+docker run -d --name undeadleech.com --restart="always" --link redis:redis --env-file envfile.list undeadleech/undeadleech.com

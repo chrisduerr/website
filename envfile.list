@@ -1,5 +1,5 @@
 # Virtual_host of the website for nginx-proxy
 VIRTUAL_HOST=undeadleech.com
 
-#MONGO URI
-MONGO_URL=mongodb://mongo/
+# REDIS URI
+REDIS_URL=redis://redis/
