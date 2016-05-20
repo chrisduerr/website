@@ -11,8 +11,19 @@ db = redis.Redis.from_url(REDIS_URL, decode_responses=True)
 
 @app.route("/")
 def index():
-    intro_content = db.get('intro-content')
-    return render_template("index.html", intro_content=intro_content)
+    intro_content = ""
+    projects = []
+    try:
+        # Get projects in format 'name;;image-url;;description'
+        # Then convert them to list and append to projects list
+        for project in db.scan_iter(match="project*"):
+            project_info = project.split(";;")
+            projects.append(project_info)
+        # Get intro_content from redis
+        intro_content = db.get('intro-content')
+    except:
+        pass
+    return render_template("index.html", intro_content=intro_content, projects=projects)
 
 @app.route("/sitemap.xml")
 @app.route("/robots.txt")
