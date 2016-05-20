@@ -45,6 +45,23 @@
       </div>
     </div>
   </div>
+  <div class="container full-size valign-wrapper">
+      <div class="row">
+        {{%- for project in projects %}}
+          <div class="col s12 m4 center-align project">
+              <img class="project-img" src="{{ project.img }}">
+              <div class="project-name">
+                  <h4>
+                      {{ project.name }}
+                  </h4>
+              </div>
+              <div class="project-description">
+                  {{ project.description }}
+              </div>
+          </div>
+        {{%- endfor %}}
+      </div>
+  </div>
 
   <!-- Small Legal Footer -->
   <div class="legal-notice">

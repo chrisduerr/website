@@ -60,6 +60,15 @@ body {
   opacity: 1;
 }
 
+.project {
+    width: 100%;
+    padding: 10px !important;
+}
+
+.project-img {
+    width: 75%;
+}
+
 .modal-footer, .modal, .btn-flat {
   background-color: #121212 !important;
   color: #a0a0a0 !important;

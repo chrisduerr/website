@@ -17,7 +17,8 @@ def index():
         # Get projects in format 'name;;image-url;;description'
         # Then convert them to list and append to projects list
         for project in db.scan_iter(match="project*"):
-            project_info = project.split(";;")
+            project_list = project.split(";;")
+            project_info = { 'name': project_list[0], 'img': project_list[1], 'description': project_list[2] }
             projects.append(project_info)
         # Get intro_content from redis
         intro_content = db.get('intro-content')
