@@ -63,6 +63,7 @@ body {
 .project {
     width: 100%;
     padding: 10px !important;
+    padding-bottom: 25px !important;
 }
 
 .project-img {

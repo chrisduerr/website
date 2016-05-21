@@ -16,7 +16,8 @@ def index():
     try:
         # Get projects in format 'name;;image-url;;description'
         # Then convert them to list and append to projects list
-        for project in db.scan_iter(match="project*"):
+        for project_key in db.scan_iter(match="project*"):
+            project = db.get(project_key)
             project_list = project.split(";;")
             project_info = { 'name': project_list[0], 'img': project_list[1], 'description': project_list[2] }
             projects.append(project_info)
