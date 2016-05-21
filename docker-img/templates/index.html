@@ -47,7 +47,7 @@
   </div>
   <div class="container full-size valign-wrapper">
       <div class="row">
-        {{%- for project in projects %}}
+        {% for project in projects %}
           <div class="col s12 m4 center-align project">
               <img class="project-img" src="{{ project.img }}">
               <div class="project-name">
@@ -59,7 +59,7 @@
                   {{ project.description }}
               </div>
           </div>
-        {{%- endfor %}}
+        {% endfor %}
       </div>
   </div>
 
