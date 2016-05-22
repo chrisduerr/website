@@ -1,14 +1,25 @@
 body {
   background-color: #121212;
-  color: #a0a0a0;
-  font-family: 'Open sans';
-  font-weight: 600;
-  font-size: 16px;
+  color: #4e4e4e;
 }
 
-@media all and (max-device-width: 600px) {
-    body {
-        font-size: 12px;
+nav {
+    box-shadow: none;
+}
+
+nav a, nav ul a {
+    color: #4e4e4e;
+    font-weight: 500;
+}
+
+#nav-name {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+@media only screen and (max-width: 992px) {
+    .nav-wrapper {
+        text-align: center;
     }
 }
 
@@ -29,63 +40,16 @@ body {
 }
 
 #intro-img {
-  cursor:pointer;
   width: 50vh;  
-  transition: all 0.75s linear;
-}
-
-#intro-img.show {
-    width: 15vh;
 }
 
 @media all and (orientation: portrait) {
     #intro-img {
         width: 50vw;
     }
-
-    #intro-img.show {
-        width: 15vw;
-    }
-}
-
-#intro-content {
-  opacity: 0;
-  height: 0;
-  transition: all 0.75s linear;
-  overflow: hidden;
-  padding: 10px;
-}
-
-#intro-content.show {
-  opacity: 1;
-}
-
-.project {
-    width: 100%;
-    padding: 10px !important;
-    padding-bottom: 25px !important;
-}
-
-.project-description {
-    font-size: 14px !important;
-}
-
-@media all and (max-device-width: 600px) {
-    .project-description {
-        font-size: 10px;
-    }
-}
-
-.project-img {
-    width: 75%;
-}
-
-.modal-footer, .modal, .btn-flat {
-  background-color: #121212 !important;
-  color: #a0a0a0 !important;
 }
 
 .legal-notice {
-  padding: 5px;
-  font-size: 10px;
+    padding: 5px;
+    font-size: 10px;
 }

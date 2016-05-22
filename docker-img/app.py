@@ -27,14 +27,30 @@ def index():
         pass
     return render_template("index.html", intro_content=intro_content, projects=projects)
 
-@app.route("/sitemap.xml")
-@app.route("/robots.txt")
-def robots():
-    return send_from_directory(app.static_folder, request.path[1:])
+@app.route("/about")
+def about():
+    return "Not much, huh? WIP!"
+
+@app.route("/projects")
+def projects():
+    return "Apparently this website right now... WIP!"
+
+@app.route("/skills")
+def skills():
+    return "NONE! Wait... WIP!"
+
+@app.route("/contact")
+def contact():
+    return "You're gonna have to guess my github username yourself. WIP!"
 
 @app.route("/impressum")
 def impressum():
     return render_template("impressum.html")
+
+@app.route("/sitemap.xml")
+@app.route("/robots.txt")
+def robots():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 # Thanks to cookie for fixing my shit
 @app.before_first_request
