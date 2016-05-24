@@ -79,5 +79,8 @@ nav a, nav ul a {
 
 .progress .determinate {
     color: #121212 !important;
-    background-color: #870000 !important;
+    background-color: #4e4e4e !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+    padding-left: 3rem !important;
 }
