@@ -31,6 +31,7 @@ nav a, nav ul a {
 .container {
   margin-left: auto !important;
   margin-right: auto !important;
+  max-width: 1500px !important
 }
 
 .row {
@@ -39,6 +40,7 @@ nav a, nav ul a {
   margin-right: auto !important;
 }
 
+/* INTRO PAGE */
 #intro-img {
   width: 50vh;  
 }
@@ -52,4 +54,9 @@ nav a, nav ul a {
 .legal-notice {
     padding: 5px;
     font-size: 10px;
+}
+
+/* ABOUT PAGE */
+.about {
+    font-size: 1.4rem;
 }

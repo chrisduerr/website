@@ -11,37 +11,30 @@ db = redis.Redis.from_url(REDIS_URL, decode_responses=True)
 
 @app.route("/")
 def index():
-    intro_content = ""
-    projects = []
-    try:
-        # Get projects in format 'name;;image-url;;description'
-        # Then convert them to list and append to projects list
-        for project_key in db.scan_iter(match="project*"):
-            project = db.get(project_key)
-            project_list = project.split(";;")
-            project_info = { 'name': project_list[0], 'img': project_list[1], 'description': project_list[2] }
-            projects.append(project_info)
-        # Get intro_content from redis
-        intro_content = db.get('intro-content')
-    except:
-        pass
-    return render_template("index.html", intro_content=intro_content, projects=projects)
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
-    return "Not much, huh? WIP!"
+    about = []
+    try:
+        # Get the about content from redis
+        about_string = db.get('about-content')
+        about = about_string.split(";;")
+    except:
+        pass
+    return render_template("about.html", about=about)
 
 @app.route("/projects")
 def projects():
-    return "Apparently this website right now... WIP!"
+    return render_template("projects.html")
 
 @app.route("/skills")
 def skills():
-    return "NONE! Wait... WIP!"
+    return render_template("skills.html")
 
 @app.route("/contact")
 def contact():
-    return "You're gonna have to guess my github username yourself. WIP!"
+    return render_template("contact.html")
 
 @app.route("/impressum")
 def impressum():
