@@ -17,7 +17,6 @@ def index():
 def about():
     about = []
     try:
-        # Get the about content from redis
         about_string = db.get('about-content')
         about = about_string.split(";;")
     except:
@@ -30,7 +29,17 @@ def projects():
 
 @app.route("/skills")
 def skills():
-    return render_template("skills.html")
+    skills = []
+    try:
+        for skills_key in db.scan_iter(match="skill*"):
+            skill_string = db.get(skills_key)
+            skill_list = skill_string.split(";;")
+            skill = { 'name': skill_list[0], 'level': skill_list[1] }
+            skills.append(skill)
+    except:
+        pass
+    sorted_skills = sorted(skills, key=lambda k: k['level'], reverse=True)
+    return render_template("skills.html", skills=sorted_skills)
 
 @app.route("/contact")
 def contact():

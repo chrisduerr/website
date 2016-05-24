@@ -66,8 +66,14 @@
 
     <div class="container full-size valign-wrapper">
         <div class="row">
-            <div class="col s12 center-align">
-                <img id="intro-img" class="responsive-img circle" src="./img/UndeadLeech_x3.png">
+            <div class="col s12 center-align skills">
+                <h2>SKILLS</h2>
+                <p>My familiarity with different programming languages.</p>
+                {% for skill in skills %}
+                <div class="progress">
+                    <div class="determinate" style="width: {{ skill.level }}%">{{ skill.name }}</div>
+                </div>
+                {% endfor %}
            </div>
         </div>
     </div>

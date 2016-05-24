@@ -60,3 +60,24 @@ nav a, nav ul a {
 .about {
     font-size: 1.4rem;
 }
+
+/* SKILLS PAGE */
+.skills h2 {
+    margin-bottom: 0;
+}
+
+.skills p {
+    margin-top: 0;
+    margin-bottom: 1.4rem;
+    font-size: 1.2rem;
+}
+
+.progress {
+    background-color: #262626 !important;
+    height: 25px !important;
+}
+
+.progress .determinate {
+    color: #121212 !important;
+    background-color: #870000 !important;
+}
