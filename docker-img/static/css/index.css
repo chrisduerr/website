@@ -40,6 +40,14 @@ nav a, nav ul a {
   margin-right: auto !important;
 }
 
+p {
+    font-size: 1.2rem;
+}
+
+a {
+    color: #870000;
+}
+
 /* INTRO PAGE */
 #intro-img {
   width: 50vh;  
@@ -69,7 +77,6 @@ nav a, nav ul a {
 .skills p {
     margin-top: 0;
     margin-bottom: 1.4rem;
-    font-size: 1.2rem;
 }
 
 .progress {
@@ -83,4 +90,9 @@ nav a, nav ul a {
     text-align: left !important;
     font-weight: 600 !important;
     padding-left: 3rem !important;
+}
+
+/* CONTACT PAGE */
+h2 a {
+    font-size: 3rem;
 }

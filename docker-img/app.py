@@ -43,7 +43,13 @@ def skills():
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    contact = []
+    try:
+        contact_string = db.get('contact-content')
+        contact = contact_string.split(";;")
+    except:
+        pass
+    return render_template("contact.html", contact=contact)
 
 @app.route("/impressum")
 def impressum():
