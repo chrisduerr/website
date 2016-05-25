@@ -24,7 +24,7 @@ nav a, nav ul a {
 }
 
 .full-size {
-  height: 100vh;
+  min-height: 90vh;
   overflow: hidden;
 }
 
