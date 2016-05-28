@@ -100,13 +100,16 @@ h2 a {
 /* PROJECTS PAGE */
 /* Set image height */
 .card-image {
-    height: 300px !important;
+    height: 500px !important;
     width: 100% !important;
+}
+
+.card-image img {
+    width: initial !important;
 }
 
 .card, .card-reveal {
     background-color: #262626 !important;
-
 }
 
 .card-content, .card-title {
