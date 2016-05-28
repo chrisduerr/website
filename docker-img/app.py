@@ -25,7 +25,16 @@ def about():
 
 @app.route("/projects")
 def projects():
-    return render_template("projects.html")
+    projects = []
+    try:
+        for project_key in db.scan_iter(match="project*"):
+            project_string = db.get(project_key)
+            project_list = project_string.split(";;")
+            project = { 'name': project_list[0], 'description': project_list[1], 'link': project_list[2] }
+            projects.append(project)
+    except:
+        pass
+    return render_template("projects.html", projects=projects)
 
 @app.route("/skills")
 def skills():

@@ -23,6 +23,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
     <!-- /Materialize -->
 
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
     <!-- MY STUFF -->
     <link rel="stylesheet" href="./css/index.css">
 </head>
@@ -59,9 +62,33 @@
 
     <div class="container full-size valign-wrapper">
         <div class="row">
-            <div class="col s12 center-align">
-                <img id="intro-img" class="responsive-img circle" src="./img/UndeadLeech_x3.png">
-           </div>
+        {% for project in projects %}
+            <div class="col s12 m6 l4 center-align">
+                <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="activator" src="img/projects/twitchstats.jpg">
+                    </div>
+                    <div style="" class="card-content">
+                        <span class="card-title activator">
+                            {{ project.name }}
+                        </span>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title">
+                            {{ project.name }}
+                        </span>
+                        <p class="card-text">
+                            {{ project.description }}
+                        </p>
+                        <p>
+                            <a href="{{ project.link }}" target="_blank" class="card-link">
+                                <i class="fa fa-github-square" aria-hidden="true"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
         </div>
     </div>
 

@@ -96,3 +96,27 @@ a {
 h2 a {
     font-size: 3rem;
 }
+
+/* PROJECTS PAGE */
+/* Set image height */
+.card-image {
+    height: 300px !important;
+    width: 100% !important;
+}
+
+.card, .card-reveal {
+    background-color: #262626 !important;
+
+}
+
+.card-content, .card-title {
+    color: #a0a0a0 !important;
+}
+
+.card-text {
+    color: #4e4e4e !important;
+}
+
+.card-link {
+    font-size: 35px;
+}
