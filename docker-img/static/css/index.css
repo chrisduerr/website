@@ -1,6 +1,7 @@
 body {
   background-color: #121212;
   color: #4e4e4e;
+  line-height: 1.6;
 }
 
 nav {
@@ -31,7 +32,7 @@ nav a, nav ul a {
 .container {
   margin-left: auto !important;
   margin-right: auto !important;
-  max-width: 1500px !important
+  max-width: 1200px !important
 }
 
 .row {
@@ -46,6 +47,12 @@ p {
 
 a {
     color: #801414;
+}
+
+footer {
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: inherit !important;
 }
 
 /* INTRO PAGE */
@@ -100,7 +107,7 @@ h2 a {
 /* PROJECTS PAGE */
 /* Set image height */
 .card-image {
-    height: 500px !important;
+    height: 350px !important;
     width: 100% !important;
 }
 
@@ -118,6 +125,7 @@ h2 a {
 
 .card-text {
     color: #4e4e4e !important;
+    text-align: left;
 }
 
 .card-link {
