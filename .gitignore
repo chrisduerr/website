@@ -1,2 +1,4 @@
 *.pyc
 *.pwds
+/target/
+**/*.rs.bk

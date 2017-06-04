@@ -1,0 +1,6 @@
+[package]
+name = "website"
+version = "0.1.0"
+authors = ["Christian Dürr <contact@christianduerr.com>"]
+
+[dependencies]

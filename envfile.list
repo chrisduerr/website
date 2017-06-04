@@ -1,5 +1,0 @@
-# Virtual_host of the website for nginx-proxy
-VIRTUAL_HOST=127.0.0.1
-
-# REDIS URI
-REDIS_URL=redis://redis/
