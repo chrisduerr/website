@@ -1,0 +1,63 @@
+body {
+  background-color: #1b1b1b;
+  color: #9e9e9e;
+  height: 100vh;
+  margin: unset;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* INDEX */
+#name {
+  font-weight: normal;
+  font-size: 3em;
+  padding: 30px;
+}
+
+/* INDEX - TERMINAL */
+
+#terminal-container {
+  box-shadow: 10px 10px 0px #121212;
+  background-color: #262626;
+  border: 2px solid #121212;
+  min-height: 415px;
+  max-height: 600px;
+  max-width: 1000px;
+  min-width: 810px;
+  padding: 15px;
+  height: 40%;
+  width: 40%;
+}
+
+#stdout {
+  font-size: 1.75em;
+  line-height: 40px;
+  align-items: end;
+  display: flex;
+  height: 85%;
+}
+
+#terminal-form {
+  font-family: monospace;
+  align-items: center;
+  font-size: 2em;
+  display: flex;
+  height: 15%;
+}
+
+#terminal-input {
+  background-color: transparent;
+  font-family: monospace;
+  font-weight: normal;
+  padding-left: 5px;
+  font-size: 1em;
+  border: unset;
+  margin: unset;
+}

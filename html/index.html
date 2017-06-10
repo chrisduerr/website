@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Christian Dürr</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Christian Dürr Web Portfolio">
+    <meta name="author" content="Christian Dürr">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="name">
+        Christian Dürr
+      </h1>
+      <div id="terminal-container">
+        <code id="stdout">
+          Try typing "help" to see all available commands
+        </code>
+        <form onsubmit="return submit_command()" id="terminal-form">
+          &gt;
+          <input type="text" name="command" id="terminal-input" autocomplete="off">
+        </form>
+      </div>
+    </div>
+  <script type="text/javascript" src="/terminal.js"></script>
+  </body>
+</html>
