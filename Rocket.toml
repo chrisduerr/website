@@ -1,0 +1,6 @@
+[production.tls]
+certs = "tls/cert.pem"
+key = "tls/privkey.pem"
+
+[global]
+workers = 16
