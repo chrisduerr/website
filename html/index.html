@@ -6,17 +6,20 @@
     <meta name="description" content="Christian Dürr Web Portfolio">
     <meta name="author" content="Christian Dürr">
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/index.css">
   </head>
   <body>
     <div class="container">
-      <h1 id="name">
+      <h1 class="title">
         Christian Dürr
       </h1>
-      <div id="terminal-container">
-        <code id="stdout">
-          Try typing "help" to see all available commands
-        </code>
-        <form onsubmit="return submit_command()" id="terminal-form">
+      <div class="terminal-container big">
+        <div class="stdout-container">
+          <code id="stdout" class="stdout big">
+            Try typing "help" to see all available commands
+          </code>
+        </div>
+        <form onsubmit="return submit_command()" class="terminal-form big">
           &gt;
           <input type="text" name="command" id="terminal-input" autocomplete="off">
         </form>

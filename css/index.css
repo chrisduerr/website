@@ -1,0 +1,16 @@
+.terminal-container.big {
+  min-height: 250px;
+  min-width: 650px;
+  padding: 15px;
+  height: 40%;
+  width: 40%;
+}
+
+.terminal-form.big {
+  font-size: 2em;
+}
+
+.stdout.big {
+  font-size: 1.75em;
+  line-height: 40px;
+}

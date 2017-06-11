@@ -1,15 +1,15 @@
 var hint = "Try typing \"help\" to see all available commands"
 var help = "\
-help      Show all available commands<br>\
-clear     Clear the terminal - Ctrl+L also works<br>\
+pages     Show all available pages<br>\
+help      Display this message<br>\
+clear     Clear the terminal [ctrl+l]<br>\
 back      Go to the last page<br>\
-forward   Go to the next page<br>\
- <br>\
-Available Pages:<br>\
-index     Back to the start<br>\
-about     Find out who I am and how to contact me<br>\
-projects  Everything about all the projects I want to show off\
+forward   Go to the next page\
 ";
+var pages = "\
+index     Back to the start<br>\
+about     Find out who I am and how to contact me<br>";
+// TODO: projects  Look at which projects I am working on<br>\
 var stdout = document.getElementById("stdout")
 
 // Check the last command and update stdout appropriately
@@ -20,6 +20,9 @@ function submit_command() {
   switch (command) {
     case "help":
       stdout.innerHTML = replace_whitespace(help);
+      break;
+    case "pages":
+      stdout.innerHTML = replace_whitespace(pages);
       break;
     case "clear":
       stdout.innerHTML = "";

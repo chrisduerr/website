@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Christian Dürr</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Christian Dürr Web Portfolio">
+    <meta name="author" content="Christian Dürr">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/small.css">
+    <link rel="stylesheet" href="/about.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">
+        About Me
+      </h1>
+      <div class="about-content">
+        <p>
+          My name is Christian Dürr. People online usually call me UndeadLeech. I am a software developer and Linux enthusiast.
+        </p>
+        <p>
+          I am currently working as a Java developer but my heart is beating for Rust. I have been using the language since 2016 and this website itself is built with it using the rocket web server. Besides Rust I also have experience with Python, C# and C++. If there is one sin I have committed in my life it is that I haven't properly learned C yet. I also have played with multiple SQL and NoSQL databases, different web servers and many other fun tools. You can find some of it in my git repositories.
+        </p>
+        <p>
+          If you are interested in finding out more about myself or want to contact me, be sure to check out my github/gitlab or write me an e-mail.
+        </p>
+        <div class="col-3"><a href="https://github.com/chrisduerr" target="_blank">Github</a></div>
+        <div class="col-3">contact@christianduerr.com</div>
+        <div class="col-3"><a href="https://gitlab.com/chrisduerr" target="_blank">Gitlab</a></div>
+      </div>
+    </div>
+    <div class="terminal-container small">
+      <div class="stdout-container">
+        <code id="stdout" class="stdout small">
+          Try typing "help" to see all available commands
+        </code>
+      </div>
+      <form onsubmit="return submit_command()" class="terminal-form small">
+        &gt;
+        <input type="text" name="command" id="terminal-input" autocomplete="off">
+      </form>
+    </div>
+  <script type="text/javascript" src="/terminal.js"></script>
+  </body>
+</html>
