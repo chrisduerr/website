@@ -78,8 +78,9 @@ function ends_with(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-if (ends_with(document.location.toString(), "404")) {
-  stdout.innerHTML = "Command returned with exit code 404";
+var errorcode = document.getElementById("errorcode").innerHTML;
+if (errorcode != "") {
+  stdout.innerHTML = "Command returned with exit code " + errorcode;
 } else {
   stdout.innerHTML = hint;
 }

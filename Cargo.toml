@@ -3,10 +3,7 @@ name = "website"
 version = "0.1.0"
 authors = ["Christian Dürr <contact@christianduerr.com>"]
 
-[dev-dependencies]
-rocket = { version = "0.2.8", features = ["testing"] }
-
 [dependencies]
-rocket_contrib = { version = "0.2.8", features = ["handlebars_templates"] }
-rocket_codegen = "0.2.8"
-rocket = "0.2.8"
+rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket", features = ["handlebars_templates"] }
+rocket_codegen = { git = "https://github.com/SergioBenitez/Rocket" }
+rocket = { git = "https://github.com/SergioBenitez/Rocket", features = ["tls"] }
