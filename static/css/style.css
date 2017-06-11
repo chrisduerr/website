@@ -54,6 +54,7 @@ a, a:visited {
   font-weight: normal;
   padding-left: 5px;
   font-size: 1em;
+  outline: unset;
   border: unset;
   margin: unset;
 }
