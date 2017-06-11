@@ -2,5 +2,8 @@
 certs = "tls/cert.pem"
 key = "tls/privkey.pem"
 
+[production]
+port = 443
+
 [global]
 workers = 16
