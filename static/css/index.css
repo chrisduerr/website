@@ -1,4 +1,6 @@
 .terminal-container.big {
+  box-shadow: 10px 10px 0px #121212;
+  border: 2px solid #121212;
   min-height: 250px;
   min-width: 650px;
   padding: 15px;

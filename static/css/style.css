@@ -25,9 +25,7 @@ a, a:visited {
 }
 
 .terminal-container {
-  box-shadow: 10px 10px 0px #121212;
   background-color: #262626;
-  border: 2px solid #121212;
 }
 
 .terminal-form {
