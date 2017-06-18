@@ -1,3 +1,11 @@
+.vcenter {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
 .separator {
   border-bottom: 3px solid #262626;
   margin: 20px;
