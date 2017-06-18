@@ -1,0 +1,46 @@
+.separator {
+  border-bottom: 3px solid #262626;
+  margin: 20px;
+}
+
+.projects-content {
+  width: 50%;
+}
+
+.project-name {
+  text-align: center;
+  font-size: 1.6em;
+  padding: 20px;
+}
+
+.project-image {
+  border: 3px solid #262626;
+  height: 150px;
+  width: 150px;
+}
+
+.project-container {
+  align-items: center;
+  display: flex;
+}
+
+.project-text {
+  padding-left: 20px;
+}
+
+.project-links {
+  display: grid;
+  padding: 10px;
+}
+
+.project-links > a {
+  text-align: center;
+}
+
+.project-links :first-child + a {
+  grid-column: 2;
+}
+
+.project-links :first-child + a + a {
+  grid-column: 3;
+}

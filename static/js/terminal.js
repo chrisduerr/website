@@ -9,9 +9,9 @@ forward   Go to the next page\
 var pages = "\
 index     Back to the start<br>\
 about     Who I am and how to contact me<br>\
+projects  The projects I'm currently working on<br>\
  <br>\
 type [page] to navigate";
-// TODO: projects  Look at which projects I am working on<br>\
 
 var stdout = document.getElementById("stdout")
 var input = document.getElementById("terminal-input");
