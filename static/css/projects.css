@@ -1,18 +1,10 @@
-.vcenter {
-  flex-direction: column;
-  align-items: center;
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-
 .separator {
   border-bottom: 3px solid #262626;
   margin: 20px;
 }
 
 .projects-content {
-  padding-bottom: 50px;
+  padding-bottom: 75px;
   padding-top: 15%;
   width: 50%;
 }
@@ -36,21 +28,4 @@
 
 .project-text {
   padding-left: 20px;
-}
-
-.project-links {
-  display: grid;
-  padding: 10px;
-}
-
-.project-links > a {
-  text-align: center;
-}
-
-.project-links :first-child + a {
-  grid-column: 2;
-}
-
-.project-links :first-child + a + a {
-  grid-column: 3;
 }

@@ -6,10 +6,18 @@ body {
 }
 
 .container {
-  display: flex;
-  align-items: center;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.vcenter {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
   height: 100%;
   width: 100%;
 }
@@ -57,4 +65,21 @@ a, a:visited {
   border: unset;
   margin: unset;
   width: 100%;
+}
+
+.grid-row {
+  display: grid;
+  padding: 10px;
+}
+
+.grid-row > * {
+  text-align: center;
+}
+
+.grid-row :first-child + * {
+  grid-column: 2;
+}
+
+.grid-row :first-child + * + * {
+  grid-column: 3;
 }
