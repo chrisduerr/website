@@ -1,3 +1,6 @@
+/* ----------------------- */
+/* --- General Classes --- */
+/* ----------------------- */
 body {
   background-color: #1b1b1b;
   color: #9e9e9e;
@@ -5,32 +8,57 @@ body {
   margin: unset;
 }
 
-.container {
-  justify-content: center;
-  flex-direction: column;
+/* Flexbox stuff */
+.hcenter {
   align-items: center;
+  flex-direction: column;
   display: flex;
-  height: 100%;
   width: 100%;
 }
 
 .vcenter {
+  justify-content: center;
   flex-direction: column;
-  align-items: center;
   display: flex;
   height: 100%;
+}
+
+.columns {
+  justify-content: space-evenly;
+  display: flex;
   width: 100%;
 }
 
+/* Main title for each page */
 .title {
   font-weight: normal;
   font-size: 3em;
 }
 
+/* Links */
 a, a:visited {
   text-decoration: unset;
   color: #ac4142;
 }
+
+/* ---------------------- */
+/* --- Subpage Styles --- */
+/* ---------------------- */
+.subpage-container {
+  max-width: 50vw;
+}
+
+.subpage-container > .title {
+  position: relative;
+  margin: unset;
+  height: 0px;
+  top: -2em;
+}
+
+
+/* ------------------------ */
+/* --- Terminal Section --- */
+/* ------------------------ */
 
 .terminal-container {
   background-color: #262626;
@@ -43,6 +71,7 @@ a, a:visited {
   height: 15%;
 }
 
+/* Terminal output */
 .stdout-container {
   overflow-x: hidden;
   overflow-y: auto;
@@ -54,6 +83,7 @@ a, a:visited {
   margin-top: auto;
 }
 
+/* Terminal input */
 #terminal-input {
   background-color: transparent;
   font-family: monospace;
@@ -67,27 +97,12 @@ a, a:visited {
   width: 100%;
 }
 
-.grid-row {
-  display: grid;
-  padding: 10px;
-}
-
-.grid-row > * {
-  text-align: center;
-}
-
-.grid-row :first-child + * {
-  grid-column: 2;
-}
-
-.grid-row :first-child + * + * {
-  grid-column: 3;
-}
-
+/* Hidden text for getting file names for links */
 .link-title {
   display: none;
 }
 
+/* Syntax highlighting for `ls` output */
 .dir {
   color: #6a9fb5;
 }

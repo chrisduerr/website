@@ -1,12 +1,7 @@
 .separator {
   border-bottom: 3px solid #262626;
   margin: 20px;
-}
-
-.projects-content {
-  padding-bottom: 75px;
-  padding-top: 15%;
-  width: 50%;
+  width: 90%;
 }
 
 .project-name {
@@ -28,4 +23,8 @@
 
 .project-text {
   padding-left: 20px;
+}
+
+.project-text > .columns {
+  padding-top: 10px;
 }
