@@ -18,24 +18,30 @@ document.addEventListener('keydown', keydown, true);
 // Cycle to previous projects
 function prev_projects() {
     if (projects_offset <= 0) {
-        return;
+        // If end was reached, loop to the other side
+        update_projects(false);
+        projects_offset = max_projects;
+        update_projects(true);
+    } else {
+        update_projects(false);
+        projects_offset -= projects_step;
+        update_projects(true);
     }
-
-    update_projects(false);
-    projects_offset -= projects_step;
-    update_projects(true);
 }
 document.getElementById("projects-prev").addEventListener('click', prev_projects);
 
 // Cycle to next projects
 function next_projects() {
     if (projects_offset >= max_projects) {
-        return;
+        // If end was reached, loop to the other side
+        update_projects(false);
+        projects_offset = 0;
+        update_projects(true);
+    } else {
+        update_projects(false);
+        projects_offset += projects_step;
+        update_projects(true);
     }
-
-    update_projects(false);
-    projects_offset += projects_step;
-    update_projects(true);
 }
 document.getElementById("projects-next").addEventListener('click', next_projects);
 
