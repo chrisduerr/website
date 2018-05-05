@@ -197,7 +197,7 @@ function ls(command) {
 
 // Replace whitespace with "&nbsp;" to prevent shortening
 function replace_whitespace(input) {
-  return input.replace(/ /g, "&nbsp;");
+  return input.replace(/  /g, "&nbsp;&nbsp;");
 }
 
 // Event handler for keyboard shortcuts
