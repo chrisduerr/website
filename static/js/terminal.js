@@ -23,37 +23,18 @@ var completions = ["help", "clear", "back", "forward",
     "source",  "source links/", "source ./links/"
 ];
 
-// Add completions for links and pages
-function add_completions() {
-    // Add completions for links
-    var links = document.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-        var title = links[i].getElementsByClassName("link-title");
-        if (title.length === 1) {
-            completions.push("cat links/"      + title[0].innerHTML);
-            completions.push("cat ./links/"    + title[0].innerHTML);
-            completions.push("open links/"     + title[0].innerHTML);
-            completions.push("open ./links/"   + title[0].innerHTML);
-            completions.push("source links/"   + title[0].innerHTML);
-            completions.push("source ./links/" + title[0].innerHTML);
-        }
-    }
-
-    // Add completions for pages
-    for (var i = 0; i < pages.length; i++) {
-        completions.push("open " + pages[i]);
-        completions.push("source " + pages[i]);
-        completions.push("open ./" + pages[i]);
-        completions.push("source ./" + pages[i]);
-    }
-}
-add_completions();
-
 var command_history = [];
 var history_offset = 0;
 
+var projects_offset = 0;
+var projects_step = 3;
+var max_projects = 3;
+
 var stdout = document.getElementById("stdout")
 var input = document.getElementById("terminal-input");
+
+// Show helpful hint as default message (instead of no JS warning)
+stdout.innerHTML = hint;
 
 // Check the last command and update stdout appropriately
 function submit_command() {
@@ -280,8 +261,77 @@ function keydown(e) {
             input.value = hist_command;
         }
     }
+    // <Left> for previous project
+    else if (e.keyCode == 37) {
+        if (projects_offset <= 0) {
+            return;
+        }
+
+        update_projects(true);
+        projects_offset -= projects_step;
+        update_projects(false);
+    }
+    // <Right> for next project
+    else if (e.keyCode == 39) {
+        if (projects_offset >= max_projects) {
+            return;
+        }
+
+        update_projects(true);
+        projects_offset += projects_step;
+        update_projects(false);
+    }
 }
 document.addEventListener('keydown', keydown, true);
+
+// Update the visibility of all currently active projects
+function update_projects(visible) {
+    for (var i = projects_offset; i < (projects_offset + projects_step); i++) {
+        var proj = document.getElementById("project-" + i);
+        var sep = document.getElementById("project-" + i + "separator");
+        set_visibility(proj, visible)
+        set_visibility(sep, visible)
+    }
+}
+
+// Set the visibility of a specific item
+function set_visibility(item, visible) {
+    if (item === null || item === undefined) {
+        return;
+    }
+
+    if (visible) {
+        item.style = "";
+    } else {
+        item.style = "display: none";
+    }
+}
+
+// Add completions for links and pages
+function add_completions() {
+    // Add completions for links
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+        var title = links[i].getElementsByClassName("link-title");
+        if (title.length === 1) {
+            completions.push("cat links/"      + title[0].innerHTML);
+            completions.push("cat ./links/"    + title[0].innerHTML);
+            completions.push("open links/"     + title[0].innerHTML);
+            completions.push("open ./links/"   + title[0].innerHTML);
+            completions.push("source links/"   + title[0].innerHTML);
+            completions.push("source ./links/" + title[0].innerHTML);
+        }
+    }
+
+    // Add completions for pages
+    for (var i = 0; i < pages.length; i++) {
+        completions.push("open " + pages[i]);
+        completions.push("source " + pages[i]);
+        completions.push("open ./" + pages[i]);
+        completions.push("source ./" + pages[i]);
+    }
+}
+add_completions();
 
 // Force focus on the terminal
 input.onblur = function(e) {
@@ -302,7 +352,4 @@ if (errorcode !== null) {
 } else if (command !== null && command !== undefined) {
     // Run the specified command
     submit_command(command);
-} else {
-    // Show helpful hint if there is no error
-    stdout.innerHTML = hint;
 }
