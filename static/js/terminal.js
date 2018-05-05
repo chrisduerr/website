@@ -23,6 +23,32 @@ var completions = ["help", "clear", "back", "forward",
     "source",  "source links/", "source ./links/"
 ];
 
+// Add completions for links and pages
+function add_completions() {
+    // Add completions for links
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+        var title = links[i].getElementsByClassName("link-title");
+        if (title.length === 1) {
+            completions.push("cat links/"      + title[0].innerHTML);
+            completions.push("cat ./links/"    + title[0].innerHTML);
+            completions.push("open links/"     + title[0].innerHTML);
+            completions.push("open ./links/"   + title[0].innerHTML);
+            completions.push("source links/"   + title[0].innerHTML);
+            completions.push("source ./links/" + title[0].innerHTML);
+        }
+    }
+
+    // Add completions for pages
+    for (var i = 0; i < pages.length; i++) {
+        completions.push("open " + pages[i]);
+        completions.push("source " + pages[i]);
+        completions.push("open ./" + pages[i]);
+        completions.push("source ./" + pages[i]);
+    }
+}
+add_completions();
+
 var command_history = [];
 var history_offset = 0;
 
@@ -98,8 +124,15 @@ function open(command, current_tab) {
     }
     // Open an internal link
     else {
+        // Remove "./" at the beginning
+        var cmd = command[1];
+        if (cmd.startsWith("./")) {
+            cmd = cmd.substring(2);
+        }
+
+        // Open page
         for (var i = 0; i < pages.length; i++) {
-            if (pages[i] === command[1]) {
+            if (pages[i] === cmd) {
                 open_link(pages[i], current_tab);
                 return;
             }
@@ -163,8 +196,7 @@ function cat(command) {
 // List directory contents
 function ls(command) {
     // List current directory
-    if (command.length == 1 || command[1] == ""
-        || command[1] == "." || command[1] == "..")
+    if (command.length == 1 || command[1] == "" || command[1] == ".")
     {
         var text = "total 12K";
         text += dir_head;
