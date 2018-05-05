@@ -87,3 +87,11 @@ a, a:visited {
 .link-title {
   display: none;
 }
+
+.dir {
+  color: #6a9fb5;
+}
+
+.file {
+  color: #90a959;
+}

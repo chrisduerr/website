@@ -10,11 +10,11 @@ source    Open a file in the current tab<br>\
 open      Open a file in a new tab<br>\
 ";
 var dir_head = "<br>\
-drwxr-xr-x  2 chris chris 4.0K May  5 19:27 .<br>\
-drwxr-xr-x  2 chris chris 4.0K May  5 19:27 ..\
+drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">.</span><br>\
+drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">..</span>\
 ";
-var page_file = "-rwx--x--x  1 chris chris    0 Jan  1 00:07 ";
-var link_file = "-rwxr-xr-x  1 chris chris   23 Jan  1 00:07 ";
+var page_file = "-rwx--x--x  1 chris chris    0 Jan  1 00:07 <span class=\"file\">";
+var link_file = "-rwxr-xr-x  1 chris chris   23 Jan  1 00:07 <span class=\"file\">";
 var pages = ["index", "about", "projects"];
 var completions = ["help", "clear", "back", "forward",
                "cat links/",    "cat ./links/",
@@ -167,9 +167,10 @@ function ls(command) {
         var text = "total 12K";
         text += dir_head;
         for(var i = 0; i < pages.length; i++) {
-            text += "<br>" + page_file + pages[i];
+            text += "<br>" + page_file + pages[i] + "</span>";
         }
-        text += "<br>drwxr-xr-x  2 chris chris 4.0K May  5 15:42 links";
+        text += "<br>drwxr-xr-x  2 chris chris 4.0K May  5 15:42 " +
+            "<span class=\"dir\">links</span>";
         stdout.innerHTML = replace_whitespace(text);
     }
     // List link directory
@@ -182,7 +183,7 @@ function ls(command) {
         for (var i = 0; i < links.length; i++) {
             var title = links[i].getElementsByClassName("link-title")[0].innerHTML;
             if (title !== undefined) {
-                text += "<br>" + link_file + title;
+                text += "<br>" + link_file + title + "</span>";
             }
         }
         stdout.innerHTML = replace_whitespace(text);
@@ -264,7 +265,7 @@ var errorcode = get_params.get("error");
 if (errorcode !== null) {
     // Show error code if it's present as a GET parameter
     stdout.innerHTML = "Command returned with exit code " + errorcode;
-} else if (command !== null) {
+} else if (command !== null && command !== undefined) {
     // Run the specified command
     submit_command(command);
 } else {
