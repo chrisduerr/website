@@ -1,3 +1,0 @@
-[global]
-workers = 16
-port = 8000

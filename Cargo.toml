@@ -1,9 +1,0 @@
-[package]
-name = "website"
-version = "0.1.0"
-authors = ["Christian Dürr <contact@christianduerr.com>"]
-
-[dependencies]
-rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket", features = ["handlebars_templates"] }
-rocket_codegen = { git = "https://github.com/SergioBenitez/Rocket" }
-rocket = { git = "https://github.com/SergioBenitez/Rocket", features = ["tls"] }

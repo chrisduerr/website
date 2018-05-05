@@ -83,3 +83,7 @@ a, a:visited {
 .grid-row :first-child + * + * {
   grid-column: 3;
 }
+
+.link-title {
+  display: none;
+}
