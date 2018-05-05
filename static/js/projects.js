@@ -37,13 +37,13 @@ function next_projects() {
     projects_offset += projects_step;
     update_projects(true);
 }
-document.getElementById("projects-next").addEventListener('click', prev_projects);
+document.getElementById("projects-next").addEventListener('click', next_projects);
 
 // Update the visibility of all currently active projects
 function update_projects(visible) {
     for (var i = projects_offset; i < (projects_offset + projects_step); i++) {
         var proj = document.getElementById("project-" + i);
-        var sep = document.getElementById("project-" + i + "separator");
+        var sep = document.getElementById("project-" + i + "-separator");
         set_visibility(proj, visible)
         set_visibility(sep, visible)
     }
