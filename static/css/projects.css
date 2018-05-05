@@ -28,3 +28,24 @@
 .project-text > .columns {
   padding-top: 10px;
 }
+
+.subpage-container {
+  position: relative;
+}
+
+#projects-prev,
+#projects-next {
+  align-items: center;
+  position: absolute;
+  font-size: 2.3em;
+  display: flex;
+  height: 100%;
+}
+
+#projects-prev {
+  left: -10%;
+}
+
+#projects-next {
+  right: -10%;
+}

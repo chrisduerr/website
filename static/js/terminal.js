@@ -26,10 +26,6 @@ var completions = ["help", "clear", "back", "forward",
 var command_history = [];
 var history_offset = 0;
 
-var projects_offset = 0;
-var projects_step = 3;
-var max_projects = 3;
-
 var stdout = document.getElementById("stdout")
 var input = document.getElementById("terminal-input");
 
@@ -261,51 +257,8 @@ function keydown(e) {
             input.value = hist_command;
         }
     }
-    // <Left> for previous project
-    else if (e.keyCode == 37) {
-        if (projects_offset <= 0) {
-            return;
-        }
-
-        update_projects(true);
-        projects_offset -= projects_step;
-        update_projects(false);
-    }
-    // <Right> for next project
-    else if (e.keyCode == 39) {
-        if (projects_offset >= max_projects) {
-            return;
-        }
-
-        update_projects(true);
-        projects_offset += projects_step;
-        update_projects(false);
-    }
 }
 document.addEventListener('keydown', keydown, true);
-
-// Update the visibility of all currently active projects
-function update_projects(visible) {
-    for (var i = projects_offset; i < (projects_offset + projects_step); i++) {
-        var proj = document.getElementById("project-" + i);
-        var sep = document.getElementById("project-" + i + "separator");
-        set_visibility(proj, visible)
-        set_visibility(sep, visible)
-    }
-}
-
-// Set the visibility of a specific item
-function set_visibility(item, visible) {
-    if (item === null || item === undefined) {
-        return;
-    }
-
-    if (visible) {
-        item.style = "";
-    } else {
-        item.style = "display: none";
-    }
-}
 
 // Add completions for links and pages
 function add_completions() {
