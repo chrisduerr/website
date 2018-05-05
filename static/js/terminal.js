@@ -89,8 +89,8 @@ function open(command, current_tab) {
 
         var links = document.getElementsByTagName("a");
         for (var i = 0; i < links.length; i++) {
-            var title = links[i].getElementsByClassName("link-title")[0].innerHTML;
-            if (title === file_name) {
+            var title = links[i].getElementsByClassName("link-title");
+            if (title.length == 1 && title[0].innerHTML === file_name) {
                 open_link(links[i].href, current_tab);
                 return;
             }
@@ -146,10 +146,12 @@ function cat(command) {
     // Try catting the file by looking through the links
     var links = document.getElementsByTagName("a");
     for (var i = 0; i < links.length; i++) {
-        var title = links[i].getElementsByClassName("link-title")[0].innerHTML;
-        if (title === file_name) {
-            stdout.innerHTML = links[i].href;
-            return;
+        var title = links[i].getElementsByClassName("link-title");
+        if (title.length == 1) {
+            if (title[0].innerHTML === file_name) {
+                stdout.innerHTML = links[i].href;
+                return;
+            }
         }
     }
 
@@ -181,9 +183,9 @@ function ls(command) {
         var text = "total 8K";
         text += dir_head;
         for (var i = 0; i < links.length; i++) {
-            var title = links[i].getElementsByClassName("link-title")[0].innerHTML;
-            if (title !== undefined) {
-                text += "<br>" + link_file + title + "</span>";
+            var title = links[i].getElementsByClassName("link-title");
+            if (title.length == 1) {
+                text += "<br>" + link_file + title[0].innerHTML + "</span>";
             }
         }
         stdout.innerHTML = replace_whitespace(text);
