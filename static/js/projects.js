@@ -69,5 +69,5 @@ function set_visibility(item, visible) {
 }
 
 var stdout = document.getElementById("stdout")
-stdout.innerHTML = "You can use <Ctrl>+<Left>/<Ctrl>+<Right> to navigate this page";
+stdout.innerHTML = "You can use &lt;Ctrl&gt;+&lt;Left&gt;/&lt;Ctrl&gt;+&lt;Right&gt; to navigate this page";
 
