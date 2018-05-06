@@ -104,6 +104,11 @@ function cd(command, current_tab) {
         }
     }
 
+    // Open a link
+    if (command[1].startsWith("https://") || command[1].startsWith("http://")) {
+        open_link(command[1], current_tab);
+    }
+
     // Could not be found
     stdout.innerHTML =
         command[0] + ": no such file or directory: " + dir;
