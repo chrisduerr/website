@@ -147,7 +147,7 @@ function open_link(url, current_tab) {
 // List directory contents
 function ls(command) {
     // Only parse directory if command contains one
-    var dir = "~/";
+    var dir = current_dir;
     if (command.length > 1) {
         dir = parse_dir(command[1]);
     }
@@ -292,19 +292,17 @@ function add_completions() {
     for (var i = 0; i < links.length; i++) {
         var title = links[i].getElementsByClassName("link-title");
         if (title.length === 1) {
-            completions.push("open links/"     + title[0].innerHTML);
-            completions.push("open ./links/"   + title[0].innerHTML);
-            completions.push("source links/"   + title[0].innerHTML);
-            completions.push("source ./links/" + title[0].innerHTML);
+            completions.push("cd links/"     + title[0].innerHTML);
+            completions.push("cd ./links/"   + title[0].innerHTML);
+            completions.push("cd ~/links/"   + title[0].innerHTML);
         }
     }
 
     // Add completions for pages
     for (var i = 0; i < pages.length; i++) {
-        completions.push("open " + pages[i]);
-        completions.push("source " + pages[i]);
-        completions.push("open ./" + pages[i]);
-        completions.push("source ./" + pages[i]);
+        completions.push("cd " + pages[i]);
+        completions.push("cd ./" + pages[i]);
+        completions.push("cd ~/" + pages[i]);
     }
 }
 add_completions();
