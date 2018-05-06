@@ -130,7 +130,7 @@ function cd(command, current_tab) {
 function set_current_dir(dir) {
     var elem = document.getElementsByClassName("terminal-form");
     if (elem.length !== 0) {
-        elem[0].firstChild.data = dir.substring(dir.length - 1) + "&nbsp;$";
+        elem[0].firstChild.innerHTML = dir.substring(0, dir.length - 1) + " $";
     }
     current_dir = dir;
 }
@@ -194,8 +194,11 @@ function parse_dir(directory) {
 
     // Remove "~/" from the beginning because it's only allowed there
     if (directory.startsWith("~/")) {
-        directory.substring(2);
+        directory = directory.substring(2);
         target_dir = "";
+    } else if (directory === "~") {
+        target_dir = "";
+        directory = "";
     }
 
     var elements = directory.split("/");
