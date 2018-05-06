@@ -38,8 +38,7 @@ function submit_command() {
     // Update state
     var stdin = input.value.trim().toLowerCase();
     var command = stdin.split(" ");
-    command_history.push(stdin);
-    command_history.splice(1, 0, input.value);
+    command_history.splice(1, 0, stdin);
     history_offset = 0;
     input.value = "";
 
@@ -135,7 +134,7 @@ function ls(command) {
 
     // List available pages in index
     if (dir === "~/") {
-        var text = "total 12K";
+        var text = "total " + (pages.length * 4 + 8) + "K";
         text += dir_head;
         for(var i = 0; i < pages.length; i++) {
             text += "<br>" + directory + pages[i].substring(2) + "</span>";
