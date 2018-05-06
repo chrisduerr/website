@@ -14,9 +14,11 @@ drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">..</span>\
 var directory = "drwx--x--x  2 chris chris 4.0K Jan  1 00:07 <span class=\"dir\">";
 var symlink =   "lrwxrwxrwx  1 chris chris    4 May  4 12:33 <span class=\"symlink\">";
 var pages = ["~/about", "~/projects"];
-var completions = ["help", "clear", "back", "forward", "ls", "ls ~/", "cd", "cd ~/"];
+var completions = ["help", "clear", "back", "forward",
+    "ls", "ls ~/", "ls ./", "cd", "cd ./", "cd ~/"
+];
 
-var command_history = [];
+var command_history = [""];
 var history_offset = 0;
 
 var working_dir = "~";
@@ -35,7 +37,7 @@ function submit_command() {
 
     // Update state
     var command = input.value.toLowerCase().split(" ");
-    command_history.splice(0, 0, command);
+    command_history.push(input.value);
     history_offset = 0;
     input.value = "";
 
@@ -60,7 +62,7 @@ function submit_command() {
             cd(command, true);
             break;
         default:
-            command_history.splice(0, 1);
+            command_history.pop();
             stdout.innerHTML =
                 "\"" + command.join(" ") + "\" is not a valid command<br>" + hint;
   }
@@ -293,9 +295,12 @@ function add_completions() {
     // Add completions for pages
     for (var i = 0; i < pages.length; i++) {
         completions.push("cd "   + pages[i]);
+        completions.push("ls "   + pages[i]);
         if (working_dir == "~") {
             completions.push("cd "   + pages[i].substring(2));
             completions.push("cd ./" + pages[i].substring(2));
+            completions.push("ls "   + pages[i].substring(2));
+            completions.push("ls ./" + pages[i].substring(2));
         }
     }
 }
