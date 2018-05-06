@@ -128,9 +128,9 @@ function cd(command, current_tab) {
 
 // Update the working directory in the command line
 function set_current_dir(dir) {
-    var elem = document.getElementsByClassName("terminal-form");
-    if (elem.length !== 0) {
-        elem[0].firstChild.innerHTML = dir.substring(0, dir.length - 1) + " $";
+    var elem = document.getElementById("ps1");
+    if (elem !== null) {
+        elem.innerHTML = dir.substring(0, dir.length - 1) + " $";
     }
     current_dir = dir;
 }
@@ -203,7 +203,7 @@ function parse_dir(directory) {
 
     var elements = directory.split("/");
     for (var i = 0; i < elements.length; i++) {
-        if (elements[i] == ".") {
+        if (elements[i] == "." || elements[i] == "") {
             continue;
         }
 
