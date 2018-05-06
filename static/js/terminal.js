@@ -210,7 +210,7 @@ function parse_dir(directory) {
         // Go to previous dir
         if (elements[i] == "..") {
             var tmp = target_dir.split("/");
-            tmp.pop(1);
+            tmp = tmp.splice(0, tmp.length - 2);
             if (tmp.length !== 0) {
                 target_dir = tmp.join("/") + "/";
             } else {
