@@ -38,6 +38,7 @@ function submit_command() {
     // Update state
     var command = input.value.toLowerCase().split(" ");
     command_history.push(input.value);
+    command_history.splice(1, 0, input.value);
     history_offset = 0;
     input.value = "";
 
@@ -62,7 +63,7 @@ function submit_command() {
             cd(command, true);
             break;
         default:
-            command_history.pop();
+            command_history.splice(1, 1);
             stdout.innerHTML =
                 "\"" + command.join(" ") + "\" is not a valid command<br>" + hint;
   }
