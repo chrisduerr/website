@@ -190,7 +190,7 @@ function ls(command) {
 // This is either "~/directory" for pages or "~/links/directory" for links
 function parse_dir(directory) {
     // Setup the base directory to the current working directory
-    var target_dir = current_dir;
+    var target_dir = current_dir.substring(2);
 
     // Remove "~/" from the beginning because it's only allowed there
     if (directory.startsWith("~/")) {
