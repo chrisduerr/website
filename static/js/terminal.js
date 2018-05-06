@@ -13,16 +13,13 @@ drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">..</span>\
 ";
 var directory = "drwx--x--x  2 chris chris 4.0K Jan  1 00:07 <span class=\"dir\">";
 var symlink =   "lrwxrwxrwx  1 chris chris    4 May  4 12:33 <span class=\"symlink\">";
-var pages = ["index", "about", "projects"];
-var completions = ["help", "clear", "back", "forward",
-    "ls", "ls links/", "ls ./links/", "ls ~/links/",
-    "cd", "cd links/", "cd ./links/", "cd ~/links/"
-];
+var pages = ["~/about", "~/projects"];
+var completions = ["help", "clear", "back", "forward", "ls", "ls ~/", "cd", "cd ~/"];
 
 var command_history = [];
 var history_offset = 0;
 
-var current_dir = "~/";
+var working_dir = "~";
 
 var stdout = document.getElementById("stdout")
 var input = document.getElementById("terminal-input");
@@ -80,59 +77,33 @@ function cd(command, current_tab) {
 
     // Change to root when running just "cd"
     if (dir === "~/") {
-        set_current_dir("~/");
+        open_link("index", current_tab);
         return;
     }
 
-    // Change to links when runnig "cd ~/links"
-    if (dir === "~/links")
-    {
-        set_current_dir("~/links/");
-        return;
-    }
-
-    // Open an external link
-    if (dir.startsWith("~/links/"))
-    {
-        // Get the specified dir name
-        var dir_name = dir.substring("~/links/".length);
-
-        // Read the link for the name
-        var links = document.getElementsByTagName("a");
-        for (var i = 0; i < links.length; i++) {
-            var title = links[i].getElementsByClassName("link-title");
-            if (title.length == 1 && title[0].innerHTML === dir_name) {
-                open_link(links[i].href, current_tab);
-                return;
-            }
+    // Open an internal page
+    for (var i = 0; i < pages.length; i++) {
+        if (pages[i] === dir) {
+            // Trim "~/" before opening "~/projects"|"~/about"
+            open_link(pages[i].substring(2), current_tab);
+            return;
         }
     }
-    // Open an internal link
-    else {
-        // Remove "~/" at the beginning
-        var dir_name = dir.substring("~/".length);
 
-        // Open page
-        for (var i = 0; i < pages.length; i++) {
-            if (pages[i] === dir_name) {
-                open_link(pages[i], current_tab);
-                return;
-            }
+    // Open an external symlink
+    var symlink = dir.substring((working_dir + "/").length);
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+        var title = links[i].getElementsByClassName("link-title");
+        if (title.length >= 1 && title[0].innerHTML === symlink) {
+            open_link(links[i].href, current_tab);
+            return;
         }
     }
 
     // Could not be found
     stdout.innerHTML =
         command[0] + ": no such file or directory: " + dir;
-}
-
-// Update the working directory in the command line
-function set_current_dir(dir) {
-    var elem = document.getElementById("ps1");
-    if (elem !== null) {
-        elem.innerHTML = dir.substring(0, dir.length - 1) + " $";
-    }
-    current_dir = dir;
 }
 
 // Open a link
@@ -152,24 +123,22 @@ function ls(command) {
     }
     var dir = parse_dir(command[1]);
 
-    // List current directory
-    if (dir === "~/")
-    {
+    // List available pages in index
+    if (dir === "~/") {
         var text = "total 12K";
         text += dir_head;
         for(var i = 0; i < pages.length; i++) {
-            text += "<br>" + directory + pages[i] + "</span>";
+            text += "<br>" + directory + pages[i].substring(2) + "</span>";
         }
-        text += "<br>drwxr-xr-x  2 chris chris 4.0K May  5 15:42 " +
-            "<span class=\"dir\">links</span>";
         stdout.innerHTML = replace_whitespace(text);
+        return;
     }
-    // List link directory
-    else if (dir === "~/links")
-    {
-        var links = document.getElementsByTagName("a");
+
+    // Show links when in a subdirectory and `dir` is working directory
+    if (dir == working_dir && pages.includes(dir)) {
         var text = "total 8K";
         text += dir_head;
+        var links = document.getElementsByTagName("a");
         for (var i = 0; i < links.length; i++) {
             var title = links[i].getElementsByClassName("link-title");
             if (title.length == 1) {
@@ -178,19 +147,43 @@ function ls(command) {
             }
         }
         stdout.innerHTML = replace_whitespace(text);
+        return;
     }
+
+    // Don't show anything for a page when it's not open
+    if (pages.includes(dir)) {
+        var text = "total 8K";
+        text += dir_head;
+        stdout.innerHTML = replace_whitespace(text);
+        return;
+    }
+
+    // Show symlink targets
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+        var title = links[i].getElementsByClassName("link-title");
+        if (title.length == 1) {
+            var symlink_target = parse_dir("./" + title[0].innerHTML);
+            if (dir == symlink_target) {
+                stdout.innerHTML = symlink + title[0].innerHTML +
+                    "</span>" + " -> " + links[i].href;
+                return;
+            }
+        }
+    }
+
     // No directory found
-    else {
-        stdout.innerHTML =
-            "ls: cannot access '" + dir + "': No such file or directory";
-    }
+    stdout.innerHTML =
+        "ls: cannot access '" + dir + "': No such file or directory";
 }
 
 // Return the canonical version of a directory
-// This is either "~/directory" for pages or "~/links/directory" for links
 function parse_dir(directory) {
     // Setup the base directory to the current working directory
-    var target_dir = current_dir.substring(2);
+    var target_dir = working_dir.substring(2);
+    if (target_dir !== "") {
+        target_dir += "/";
+    }
 
     // Remove "~/" from the beginning because it's only allowed there
     if (directory.startsWith("~/")) {
@@ -292,20 +285,52 @@ function add_completions() {
     for (var i = 0; i < links.length; i++) {
         var title = links[i].getElementsByClassName("link-title");
         if (title.length === 1) {
-            completions.push("cd links/"     + title[0].innerHTML);
-            completions.push("cd ./links/"   + title[0].innerHTML);
-            completions.push("cd ~/links/"   + title[0].innerHTML);
+            completions.push("cd "   + title[0].innerHTML);
+            completions.push("cd ./" + title[0].innerHTML);
         }
     }
 
     // Add completions for pages
     for (var i = 0; i < pages.length; i++) {
-        completions.push("cd " + pages[i]);
-        completions.push("cd ./" + pages[i]);
-        completions.push("cd ~/" + pages[i]);
+        completions.push("cd "   + pages[i]);
+        if (working_dir == "~") {
+            completions.push("cd "   + pages[i].substring(2));
+            completions.push("cd ./" + pages[i].substring(2));
+        }
     }
 }
 add_completions();
+
+// Set the working directory to the current page
+function set_working_dir() {
+    var loc = document.location.href;
+    var index = loc.lastIndexOf("/");
+    if (index !== -1) {
+        var page = "~/" + loc.substring(index + "/".length);
+
+        var elem = document.getElementById("ps1");
+        if (elem !== null) {
+            if (pages.includes(page)) {
+                elem.innerHTML = page + " $";
+                working_dir = page;
+            } else {
+                elem.innerHTML = "~ $";
+            }
+        }
+    }
+}
+set_working_dir();
+
+// Show error messages if present
+function update_stderr() {
+    var get_params = new URL(window.location.href).searchParams;
+    var errorcode = get_params.get("error");
+    if (errorcode !== null) {
+        // Show error code if it's present as a GET parameter
+        stdout.innerHTML = "Command returned with exit code " + errorcode;
+    }
+}
+update_stderr();
 
 // Force focus on the terminal
 input.onblur = function(e) {
@@ -315,15 +340,3 @@ input.onblur = function(e) {
   }, 10);
 }
 input.focus();
-
-// Setup the message that will show up in the terminal by default
-var get_params = new URL(window.location.href).searchParams;
-var command = get_params.get("command");
-var errorcode = get_params.get("error");
-if (errorcode !== null) {
-    // Show error code if it's present as a GET parameter
-    stdout.innerHTML = "Command returned with exit code " + errorcode;
-} else if (command !== null && command !== undefined) {
-    // Run the specified command
-    submit_command(command);
-}
