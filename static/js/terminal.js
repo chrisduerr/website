@@ -147,10 +147,10 @@ function open_link(url, current_tab) {
 // List directory contents
 function ls(command) {
     // Only parse directory if command contains one
-    var dir = current_dir;
-    if (command.length > 1) {
-        dir = parse_dir(command[1]);
+    if (command.length == 1) {
+        command.push("./");
     }
+    var dir = parse_dir(command[1]);
 
     // List current directory
     if (dir === "~/")
