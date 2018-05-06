@@ -36,8 +36,9 @@ function submit_command() {
     }
 
     // Update state
-    var command = input.value.toLowerCase().split(" ");
-    command_history.push(input.value);
+    var stdin = input.value.trim().toLowerCase();
+    var command = stdin.split(" ");
+    command_history.push(stdin);
     command_history.splice(1, 0, input.value);
     history_offset = 0;
     input.value = "";
@@ -107,6 +108,7 @@ function cd(command, current_tab) {
     // Open a link
     if (command[1].startsWith("https://") || command[1].startsWith("http://")) {
         open_link(command[1], current_tab);
+        return;
     }
 
     // Could not be found
