@@ -14,9 +14,7 @@ drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">..</span>\
 var directory = "drwx--x--x  2 chris chris 4.0K Jan  1 00:07 <span class=\"dir\">";
 var symlink =   "lrwxrwxrwx  1 chris chris    4 May  4 12:33 <span class=\"symlink\">";
 var pages = ["~/about", "~/projects"];
-var completions = ["help", "clear", "back", "forward",
-    "ls", "ls ~/", "ls ./", "cd", "cd ./", "cd ~/"
-];
+var commands = ["help", "clear", "back", "forward", "ls", "cd"];
 
 var command_history = [""];
 var history_offset = 0;
@@ -32,7 +30,7 @@ stdout.innerHTML = hint;
 // Check the last command and update stdout appropriately
 function submit_command() {
     if (input.value === null || input.value === "") {
-        return;
+        return false;
     }
 
     // Update state
@@ -238,6 +236,165 @@ function replace_whitespace(input) {
   return input.replace(/  /g, "&nbsp;&nbsp;");
 }
 
+// Commmand completions
+function complete() {
+    // Split up user input
+    var stdin = input.value.toLowerCase();
+    var command = stdin.split(" ");
+
+    // Setup array with all matching completions
+    var matches = [];
+
+    // Special case of empty command[1]
+    var empty_base = false;
+    if (command[1] == "") {
+        empty_base = true;
+        command[1] = "./";
+    }
+
+    // Complete commands
+    if (command.length == 1) {
+        for(var i = 0; i < commands.length; i++) {
+            if (commands[i].startsWith(command[0])) {
+                matches.push(commands[i] + " ");
+            }
+        }
+    }
+    // Special case for handling `.` and `..` inside paths and `~` as only element
+    else if (command[1].endsWith(".") || command[1].endsWith("..") || command[1] == "~") {
+        input.value = input.value + "/";
+    }
+    else {
+        // Complete pages
+        let real_dir = parse_dir(command[1]);
+        for (var i = 0; i < pages.length; i++) {
+            // Make sure it starts with it, but is not a complete match
+            if (pages[i].substring(0, pages[i].length - 1).startsWith(real_dir)
+                // Is exact match and doesn't end with "/"
+                || (pages[i] == real_dir && !command[1].endsWith("/")))
+            {
+                matches.push(command[0] + " " + replace_crumb(command[1], pages[i]) + "/");
+            }
+        }
+
+        // Complete links
+        // Either the dir looks like "~/prj/aoeu" with only one crumb after the working dir
+        if ((real_dir.startsWith(working_dir) && real_dir.lastIndexOf("/") == working_dir.length)
+            // Or looks like "~/prj/" where dir is working_dir and there's only a "/" after that
+            || (real_dir == working_dir && command[1].endsWith("/")))
+        {
+            // Get the "te" out of "~/abc/te"
+            var index = real_dir.lastIndexOf("/") + 1;
+            var input_path_crumb = real_dir.substring(index);
+            if (index == 2) {
+                input_path_crumb = "";
+            }
+
+            var links = document.getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                var title = links[i].getElementsByClassName("link-title");
+                if (title.length >= 1) {
+                    title = title[0].innerHTML;
+                    if (title.startsWith(input_path_crumb)) {
+                        matches.push(command[0] + " " + replace_crumb(command[1], title));
+                    }
+                }
+            }
+        }
+    }
+
+    // No matches found
+    if (matches.length == 0) {
+        return;
+    }
+
+    // Remove "./" from matches if command[1] was just ""
+    if (empty_base) {
+        for (var i = 0; i < matches.length; i++) {
+            matches[i] = matches[i].replace("./", "");
+        }
+    }
+
+    // Check available matches
+    var first_match = matches[0];
+    var match_len = 0;
+    loop:
+        while (match_len < first_match.length) {
+            for (var j = 1; j < matches.length; j++) {
+                if (first_match[match_len] != matches[j][match_len]) {
+                    break loop;
+                }
+            }
+            match_len++;
+        }
+
+    // Not a full match, print all options
+    if (first_match.length != match_len) {
+        // Get the portion of the last crumb inside the match
+        var min_match = first_match.substring(0, match_len);
+        var index = min_match.lastIndexOf("/");
+        if (index == -1) {
+            index = min_match.lastIndexOf(" ");
+        }
+        var last_crumb = min_match.substring(index + 1);
+
+        // Get max match length and cut of the beginning of each match
+        var minified_matches = [];
+        var max_length = 0;
+        for (var i = 0; i < matches.length; i++) {
+            var minified_match = matches[i].substring(match_len);
+            minified_matches.push(minified_match);
+
+            if (minified_match.length > max_length) {
+                max_length = minified_match.length;
+            }
+        }
+
+        // Create the output string
+        let output = last_crumb + minified_matches[0];
+        for (var i = 1; i < minified_matches.length; i++) {
+            // Add required whitespace to previous entry
+            var missing = max_length - minified_matches[i - 1].length;
+            output += Array(missing + 1).fill("&nbsp;").join("") + " ";
+
+            // Add the element itself
+            output += "<nobr>" + last_crumb + minified_matches[i] + "</nobr>";
+        }
+
+        // Print the available completions to stdout
+        stdout.innerHTML = output;
+    } else {
+        // Clear stdout upon completion
+        stdout.innerHTML = "";
+    }
+
+    // Set the stdin to the minimum match
+    input.value = first_match.substring(0, match_len);
+}
+
+// Replace the last crumb of one paths with the one of another
+// Creates "~/abc/../abc/test" out of "~/abc/../abc/te" + "~/ggg/test"
+function replace_crumb(path1, path2) {
+    // Remove last crumb of first path "~/abc/../abc/te" -> "~/abc/../abc"
+    var path1_index = path1.lastIndexOf("/");
+    var base_path = path1.substring(0, path1_index);
+
+    // Get last crumb of second path "~/abc/test" -> "/test"
+    var path2_index = path2.lastIndexOf("/");
+    var crumb = path2.substring(path2_index);
+
+    // Merge the path and the crumb
+    if (path1_index == -1 && path2_index == -1) {
+        return crumb;
+    } else if (path1_index == -1) {
+        return crumb.substring(1);
+    } else if (path2_index == -1) {
+        return base_path + "/" + crumb;
+    } else {
+        return base_path + crumb;
+    }
+}
+
 // Event handler for keyboard shortcuts
 function keydown(e) {
     // <Ctrl>+<L> to clear terminal
@@ -248,17 +405,7 @@ function keydown(e) {
     // <Tab> for completion
     else if (e.keyCode == 9) {
         e.preventDefault();
-        var current = input.value;
-        if (current.length == 0) {
-            return;
-        }
-
-        for(var i = 0; i < completions.length; i++) {
-            if (completions[i].startsWith(current)) {
-                input.value = completions[i];
-                return;
-            }
-        }
+        complete();
     }
     // <Up> for previous command
     else if (e.keyCode == 38) {
@@ -286,32 +433,6 @@ function keydown(e) {
     }
 }
 document.addEventListener('keydown', keydown, true);
-
-// Add completions for links and pages
-function add_completions() {
-    // Add completions for links
-    var links = document.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-        var title = links[i].getElementsByClassName("link-title");
-        if (title.length === 1) {
-            completions.push("cd "   + title[0].innerHTML);
-            completions.push("cd ./" + title[0].innerHTML);
-        }
-    }
-
-    // Add completions for pages
-    for (var i = 0; i < pages.length; i++) {
-        completions.push("cd "   + pages[i]);
-        completions.push("ls "   + pages[i]);
-        if (working_dir == "~") {
-            completions.push("cd "   + pages[i].substring(2));
-            completions.push("cd ./" + pages[i].substring(2));
-            completions.push("ls "   + pages[i].substring(2));
-            completions.push("ls ./" + pages[i].substring(2));
-        }
-    }
-}
-add_completions();
 
 // Set the working directory to the current page
 function set_working_dir() {
