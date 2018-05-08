@@ -416,6 +416,7 @@ function keydown(e) {
         }
         history_offset++;
 
+        // Fill the input with the previous command
         var hist_command = command_history[history_offset];
         if (hist_command !== undefined) {
             input.value = hist_command;
@@ -428,6 +429,7 @@ function keydown(e) {
         }
         history_offset--;
 
+        // Fill the input with the next command
         var hist_command = command_history[history_offset];
         if (hist_command !== undefined) {
             input.value = hist_command;
@@ -467,13 +469,7 @@ function update_stderr() {
 }
 update_stderr();
 
-// Force focus on the terminal
-input.onblur = function(e) {
-  var terminal_input = this;
-  setTimeout(function() {
-    terminal_input.focus()
-  }, 10);
-}
+// Focus termisal at beginning
 input.focus();
 
 // Parse the content of a page and add it to the links
