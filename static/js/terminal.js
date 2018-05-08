@@ -24,6 +24,11 @@ var working_dir = "~";
 var stdout = document.getElementById("stdout")
 var input = document.getElementById("terminal-input");
 
+// A "dictionary" which stores all links on all pages
+// Should look like this:
+//      `links["/projects"] = [ { url = "https://duckduckgo.com", title = "duckduckgo" } ];`
+var links = {};
+
 // Show helpful hint as default message (instead of no JS warning)
 stdout.innerHTML = hint;
 
@@ -92,13 +97,15 @@ function cd(command, current_tab) {
     }
 
     // Open an external symlink
-    var symlink = dir.substring((working_dir + "/").length);
-    var links = document.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-        var title = links[i].getElementsByClassName("link-title");
-        if (title.length >= 1 && title[0].innerHTML === symlink) {
-            open_link(links[i].href, current_tab);
-            return;
+    var base = parse_dir(dir + "/..");
+    var available_links = links[base];
+    if (available_links !== undefined) {
+        for (var i = 0; i < available_links.length; i++) {
+            var title_path = base + "/" + available_links[i]["title"];
+            if (dir === title_path) {
+                open_link(available_links[i]["url"], current_tab);
+                return;
+            }
         }
     }
 
@@ -141,39 +148,34 @@ function ls(command) {
         return;
     }
 
-    // Show links when in a subdirectory and `dir` is working directory
-    if (dir == working_dir && pages.includes(dir)) {
-        var text = "total 8K";
-        text += dir_head;
-        var links = document.getElementsByTagName("a");
-        for (var i = 0; i < links.length; i++) {
-            var title = links[i].getElementsByClassName("link-title");
-            if (title.length == 1) {
-                text += "<br>" + symlink + title[0].innerHTML +
-                    "</span>" + " -> " + links[i].href;
-            }
-        }
-        stdout.innerHTML = replace_whitespace(text);
-        return;
-    }
-
-    // Don't show anything for a page when it's not open
+    // Show available links of target directory
     if (pages.includes(dir)) {
         var text = "total 8K";
         text += dir_head;
+
+        // Show all available symlinks
+        var available_links = links[dir];
+        if (available_links !== undefined)
+        {
+            for (var i = 0; i < available_links.length; i++) {
+                text += "<br>" + symlink + available_links[i]["title"] +
+                    "</span> -> " + available_links[i]["url"];
+            }
+        }
+
         stdout.innerHTML = replace_whitespace(text);
         return;
     }
 
     // Show symlink targets
-    var links = document.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-        var title = links[i].getElementsByClassName("link-title");
-        if (title.length == 1) {
-            var symlink_target = parse_dir("./" + title[0].innerHTML);
-            if (dir == symlink_target) {
-                stdout.innerHTML = symlink + title[0].innerHTML +
-                    "</span>" + " -> " + links[i].href;
+    var target_dir = parse_dir(dir + "/..");
+    var available_links = links[target_dir];
+    if (available_links !== undefined) {
+        for (var i = 0; i < available_links.length; i++) {
+            var target = target_dir + "/" + available_links[i]["title"];
+            if (dir === target) {
+                stdout.innerHTML = symlink + available_links[i]["title"] +
+                    "</span> -> " + available_links[i]["url"];
                 return;
             }
         }
@@ -278,23 +280,23 @@ function complete() {
         }
 
         // Complete links
-        // Either the dir looks like "~/prj/aoeu" with only one crumb after the working dir
-        if ((real_dir.startsWith(working_dir) && real_dir.lastIndexOf("/") == working_dir.length)
-            // Or looks like "~/prj/" where dir is working_dir and there's only a "/" after that
-            || (real_dir == working_dir && command[1].endsWith("/")))
+        // Only complete links if no pages were completed
+        if (matches.length == 0)
         {
             // Get the "te" out of "~/abc/te"
             var index = real_dir.lastIndexOf("/") + 1;
             var input_path_crumb = real_dir.substring(index);
             if (index == 2) {
+                index = real_dir.length + 1;
                 input_path_crumb = "";
             }
 
-            var links = document.getElementsByTagName("a");
-            for (var i = 0; i < links.length; i++) {
-                var title = links[i].getElementsByClassName("link-title");
-                if (title.length >= 1) {
-                    title = title[0].innerHTML;
+            // Get the "~/abc" out of "~/abc/te"
+            var base = real_dir.substring(0, index - 1);
+            var available_links = links[base];
+            if (available_links !== undefined) {
+                for (var i = 0; i < available_links.length; i++) {
+                    var title = available_links[i]["title"];
                     if (title.startsWith(input_path_crumb)) {
                         matches.push(command[0] + " " + replace_crumb(command[1], title));
                     }
@@ -473,3 +475,41 @@ input.onblur = function(e) {
   }, 10);
 }
 input.focus();
+
+// Parse the content of a page and add it to the links
+function page_links_callback(page, responseText) {
+    // Parse response text
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(responseText, "text/html");
+
+    // Add all links + titles
+    var link_tags = doc.getElementsByTagName("a");
+    if (link_tags.length >= 1) {
+        links[page] = [];
+    }
+    for (var i = 0; i < link_tags.length; i++) {
+        var title = link_tags[i].getElementsByClassName("link-title");
+        if (title.length == 1) {
+            var link = {};
+            link["url"] = link_tags[i].href;
+            link["title"] = title[0].innerHTML;
+            links[page].push(link);
+        }
+    }
+}
+
+// Asynchronously load links + link titles for every page
+function load_links() {
+    for (var i = 0; i < pages.length; i++) {
+        // Go from path to URL crumb "~/projects" -> "/projects"
+        var page = pages[i].substring(1);
+
+        // Synchronously send a request to get the page
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", page, false);
+        xmlHttp.send(null);
+        page_links_callback(pages[i], xmlHttp.responseText);
+    }
+}
+load_links();
+
