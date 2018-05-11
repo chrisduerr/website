@@ -13,13 +13,13 @@ drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">..</span>\
 ";
 var directory = "drwx--x--x  2 chris chris 4.0K Jan  1 00:07 <span class=\"dir\">";
 var symlink =   "lrwxrwxrwx  1 chris chris    4 May  4 12:33 <span class=\"symlink\">";
-var pages = ["~/about", "~/projects"];
+var pages = ["/about", "/projects"];
 var commands = ["help", "clear", "back", "forward", "ls", "cd"];
 
 var command_history = [""];
 var history_offset = 0;
 
-var working_dir = "~";
+var working_dir = "/";
 
 var stdout = document.getElementById("stdout")
 var input = document.getElementById("terminal-input");
@@ -76,13 +76,13 @@ function submit_command() {
 
 function cd(command, current_tab) {
     // Only parse directory if command contains one
-    var dir = "~/";
+    var dir = "/";
     if (command.length > 1) {
         dir = parse_dir(command[1]);
     }
 
     // Change to root when running just "cd"
-    if (dir === "~/") {
+    if (dir === "/") {
         open_link("index", current_tab);
         return;
     }
@@ -90,8 +90,8 @@ function cd(command, current_tab) {
     // Open an internal page
     for (var i = 0; i < pages.length; i++) {
         if (pages[i] === dir) {
-            // Trim "~/" before opening "~/projects"|"~/about"
-            open_link(pages[i].substring(2), current_tab);
+            // Trim "/" before opening "/projects"|"/about"
+            open_link(pages[i].substring(1), current_tab);
             return;
         }
     }
@@ -138,11 +138,11 @@ function ls(command) {
     var dir = parse_dir(command[1]);
 
     // List available pages in index
-    if (dir === "~/") {
+    if (dir === "/") {
         var text = "total " + (pages.length * 4 + 8) + "K";
         text += dir_head;
         for(var i = 0; i < pages.length; i++) {
-            text += "<br>" + directory + pages[i].substring(2) + "</span>";
+            text += "<br>" + directory + pages[i].substring(1) + "</span>";
         }
         stdout.innerHTML = replace_whitespace(text);
         return;
@@ -189,18 +189,28 @@ function ls(command) {
 // Return the canonical version of a directory
 function parse_dir(directory) {
     // Setup the base directory to the current working directory
-    var target_dir = working_dir.substring(2);
+    var target_dir = working_dir.substring(1);
     if (target_dir !== "") {
         target_dir += "/";
     }
 
-    // Remove "~/" from the beginning because it's only allowed there
+    // Replace "~/" at beginning with fake home directory
+    // These will all result in errors
     if (directory.startsWith("~/")) {
         directory = directory.substring(2);
-        target_dir = "";
+        target_dir = "/home/chris/";
     } else if (directory === "~") {
-        target_dir = "";
+        target_dir = "/home/chris/";
         directory = "";
+    } else if (directory.startsWith("~")) {
+        var index = directory.indexOf("/");
+        if (index !== -1) {
+            target_dir = "/home/" + directory.substring(1, index + 1);
+            directory = directory.substring(index + 1);
+        } else {
+            target_dir = "/home/" + directory + "/";
+            directory = "";
+        }
     }
 
     var elements = directory.split("/");
@@ -230,7 +240,7 @@ function parse_dir(directory) {
         target_dir = target_dir.substring(0, target_dir.length - 1);
     }
 
-    return "~/" + target_dir;
+    return "/" + target_dir;
 }
 
 // Replace whitespace with "&nbsp;" to prevent shortening
@@ -262,8 +272,8 @@ function complete() {
             }
         }
     }
-    // Special case for handling `.` and `..` inside paths and `~` as only element
-    else if (command[1].endsWith(".") || command[1].endsWith("..") || command[1] == "~") {
+    // Special case for handling `.` and `..` inside paths
+    else if (command[1].endsWith(".") || command[1].endsWith("..")) {
         input.value = input.value + "/";
     }
     else {
@@ -283,7 +293,7 @@ function complete() {
         // Only complete links if no pages were completed
         if (matches.length == 0)
         {
-            // Get the "te" out of "~/abc/te"
+            // Get the "te" out of "/abc/te"
             var index = real_dir.lastIndexOf("/") + 1;
             var input_path_crumb = real_dir.substring(index);
             if (index == 2) {
@@ -291,7 +301,7 @@ function complete() {
                 input_path_crumb = "";
             }
 
-            // Get the "~/abc" out of "~/abc/te"
+            // Get the "/abc" out of "/abc/te"
             var base = real_dir.substring(0, index - 1);
             var available_links = links[base];
             if (available_links !== undefined) {
@@ -375,13 +385,13 @@ function complete() {
 }
 
 // Replace the last crumb of one paths with the one of another
-// Creates "~/abc/../abc/test" out of "~/abc/../abc/te" + "~/ggg/test"
+// Creates "/abc/../abc/test" out of "/abc/../abc/te" + "/ggg/test"
 function replace_crumb(path1, path2) {
-    // Remove last crumb of first path "~/abc/../abc/te" -> "~/abc/../abc"
+    // Remove last crumb of first path "/abc/../abc/te" -> "/abc/../abc"
     var path1_index = path1.lastIndexOf("/");
     var base_path = path1.substring(0, path1_index);
 
-    // Get last crumb of second path "~/abc/test" -> "/test"
+    // Get last crumb of second path "/abc/test" -> "/test"
     var path2_index = path2.lastIndexOf("/");
     var crumb = path2.substring(path2_index);
 
@@ -443,7 +453,7 @@ function set_working_dir() {
     var loc = document.location.href;
     var index = loc.lastIndexOf("/");
     if (index !== -1) {
-        var page = "~/" + loc.substring(index + "/".length);
+        var page = "/" + loc.substring(index + "/".length);
 
         var elem = document.getElementById("ps1");
         if (elem !== null) {
@@ -451,7 +461,7 @@ function set_working_dir() {
                 elem.innerHTML = page + " $";
                 working_dir = page;
             } else {
-                elem.innerHTML = "~ $";
+                elem.innerHTML = "/ $";
             }
         }
     }
@@ -497,12 +507,9 @@ function page_links_callback(page, responseText) {
 // Asynchronously load links + link titles for every page
 function load_links() {
     for (var i = 0; i < pages.length; i++) {
-        // Go from path to URL crumb "~/projects" -> "/projects"
-        var page = pages[i].substring(1);
-
         // Synchronously send a request to get the page
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", page, false);
+        xmlHttp.open("GET", pages[i], false);
         xmlHttp.send(null);
         page_links_callback(pages[i], xmlHttp.responseText);
     }
