@@ -198,17 +198,17 @@ function parse_dir(directory) {
     // These will all result in errors
     if (directory.startsWith("~/")) {
         directory = directory.substring(2);
-        target_dir = "/home/chris/";
+        target_dir = "home/chris/";
     } else if (directory === "~") {
-        target_dir = "/home/chris/";
+        target_dir = "home/chris/";
         directory = "";
     } else if (directory.startsWith("~")) {
         var index = directory.indexOf("/");
         if (index !== -1) {
-            target_dir = "/home/" + directory.substring(1, index + 1);
+            target_dir = "home/" + directory.substring(1, index + 1);
             directory = directory.substring(index + 1);
         } else {
-            target_dir = "/home/" + directory + "/";
+            target_dir = "home/" + directory + "/";
             directory = "";
         }
     }
