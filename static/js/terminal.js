@@ -1,11 +1,12 @@
 var hint = "Try typing \"help\" to see all available commands"
 var help = "\
-help      Display this message<br>\
-clear     Clear the terminal screen &lt;Ctrl&gt;+&lt;L&gt;<br>\
-back      Go to the last page in history<br>\
-forward   Go to the next page in history<br>\
-ls        List directory contents<br>\
-cd        Change the working directory<br>\
+help       Display this message<br>\
+clear      Clear the terminal screen &lt;Ctrl&gt;+&lt;L&gt;<br>\
+back       Go to the last page in history<br>\
+forward    Go to the next page in history<br>\
+ls [..]    List directory contents<br>\
+cd [..]    Change the working directory<br>\
+cd [..] &  Open working directory in new tab<br>\
 ";
 var dir_head = "<br>\
 drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">.</span><br>\
@@ -63,7 +64,7 @@ function submit_command() {
             ls(command);
             break;
         case "cd":
-            cd(command, true);
+            cd(command);
             break;
         default:
             command_history.splice(1, 1);
@@ -74,11 +75,21 @@ function submit_command() {
   return false;
 }
 
-function cd(command, current_tab) {
+function cd(command) {
     // Only parse directory if command contains one
     var dir = "/";
     if (command.length > 1) {
         dir = parse_dir(command[1]);
+    }
+
+    // Check if new tab should be opened
+    var current_tab = true;
+    if (command.length == 2 && command[1] == "&") {
+        dir = "/";
+        current_tab = false;
+    }
+    else if (command.length > 2 && command[2] == "&") {
+        current_tab = false;
     }
 
     // Change to root when running just "cd"
@@ -188,9 +199,14 @@ function ls(command) {
 
 // Return the canonical version of a directory
 function parse_dir(directory) {
-    // Setup the base directory to the current working directory
-    var target_dir = working_dir.substring(1);
-    if (target_dir !== "") {
+    // Set the base directory to the current working directory if not absolute
+    var target_dir = "";
+    if (!directory.startsWith("/")) {
+        target_dir = working_dir.substring(1);
+    }
+
+    // Append "/" to the end if missing
+    if (target_dir !== "" && !target_dir.endsWith("/")) {
         target_dir += "/";
     }
 
