@@ -4,6 +4,7 @@ help       Display this message<br>\
 clear      Clear the terminal screen &lt;Ctrl&gt;+&lt;L&gt;<br>\
 back       Go to the last page in history<br>\
 forward    Go to the next page in history<br>\
+exit       Close the current tab<br>\
 ls [..]    List directory contents<br>\
 cd [..]    Change the working directory<br>\
 cd [..] &  Open working directory in new tab<br>\
@@ -65,6 +66,9 @@ function submit_command() {
             break;
         case "cd":
             cd(command);
+            break;
+        case "exit":
+            window.close();
             break;
         default:
             command_history.splice(1, 1);
