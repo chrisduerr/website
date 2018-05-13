@@ -6,13 +6,14 @@
     <meta name="description" content="Christian Dürr Web Portfolio">
     <meta name="author" content="Christian Dürr">
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/small.css">
     <link rel="stylesheet" href="/projects.css">
   </head>
   <body>
     <div class="vcenter hcenter">
       <div class="subpage-container hcenter">
-        <div id="projects-prev"><a href="/projects">&lt;</a></div>
-        <div id="projects-next"><a href="/projects">&gt;</a></div>
+        <a href="/projects"><div id="projects-prev">&lt;</div></a>
+        <a href="/projects"><div id="projects-next">&gt;</div></a>
         <div>
           <div class="project-container" id="project-3">
             <img src="/alacritty.png" class="project-image">
@@ -40,6 +41,19 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="terminal-container small">
+      <div class="stdout-container">
+        <code id="stdout" class="stdout small">
+          If you want to experience this website properly, please enable JavaScript.
+          <br><br>
+          Available Pages: <a href="/index">Index</a> | <a href="/about">About</a> | <a href="/projects">Projects</a>
+        </code>
+      </div>
+      <form onsubmit="return submit_command()" class="terminal-form small">
+        <nobr id="ps1">~ $</nobr>
+        <input type="text" name="command" id="terminal-input" autocomplete="off">
+      </form>
     </div>
   </body>
 </html>
