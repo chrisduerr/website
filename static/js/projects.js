@@ -4,13 +4,13 @@ var max_projects = 3;
 
 // Event handler for keyboard shortcuts
 function keydown(e) {
-    // <Ctrl> + <Left> for previous project
-    if (e.keyCode == 72 && e.ctrlKey) {
+    // <Left> for previous project
+    if (e.keyCode == 37) {
         e.preventDefault();
         prev_projects();
     }
-    // <Ctrl> + <Right> for next project
-    else if (e.keyCode == 76 && e.ctrlKey) {
+    // <Right> for next project
+    else if (e.keyCode == 39) {
         e.preventDefault();
         next_projects();
     }
@@ -70,6 +70,11 @@ function set_visibility(item, visible) {
     }
 }
 
+// Remove link from prev/next because that's for non-JS
+document.getElementById("projects-prev").innerHTML = "&lt;"
+document.getElementById("projects-next").innerHTML = "&gt;"
+
+// Set terminal hint to display keyboard shortcuts
 var stdout = document.getElementById("stdout")
-stdout.innerHTML = "You can use &lt;Ctrl&gt;+&lt;H&gt;/&lt;Ctrl&gt;+&lt;L&gt; to navigate this page";
+stdout.innerHTML = "You can use &lt;Left&gt;/&lt;Right&gt; to navigate this page";
 
