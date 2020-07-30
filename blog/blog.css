@@ -1,0 +1,75 @@
+@media screen and (max-width: 1500px) and (min-width: 750px) {
+    body {
+        width: 65%;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    body {
+        width: 90%;
+    }
+}
+
+body {
+    max-width: 1000px;
+}
+
+html {
+    background-color: #1b1b1b;
+    justify-content: center;
+    line-height: 1.5em;
+    display: flex;
+    color: #ccc;
+}
+
+a:not([name]) {
+    text-shadow: 1px 1px 0px black;
+    color: #c45050;
+}
+
+a:not([name]):visited {
+    text-shadow: 1px 1px 0px black;
+    color: #c45050;
+}
+
+a[name] {
+    text-decoration: none;
+    color: #ccc;
+}
+
+code {
+    background-color: #262626;
+    line-height: 1.25em;
+    padding: 5px;
+}
+
+div code {
+    padding: 15px;
+    width: 80%;
+}
+
+video {
+    background-color: #262626;
+    max-height: 30vh;
+    max-width: 80%;
+    padding: 5px;
+}
+
+.center {
+    justify-content: space-around;
+    display: flex;
+}
+
+.media {
+    padding: 25px 0px;
+}
+
+h2, h3 {
+    margin-top: 50px;
+}
+
+.title {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
