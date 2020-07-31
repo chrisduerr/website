@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alacritty Version 0.5.0</title>
+    <meta name="description" content="Alacritty Version 0.5.0">
+    <meta name="author" content="Christian Duerr">
+    <link rel="stylesheet" href="blog.css">
+    <link rel="icon" type="image/png" href="img/alacritty-favicon.png">
+  </head>
+  <body>
+    <div class="title">
+        <h1>Alacritty Version 0.5.0 Release</h1>
+        <h4>July 31, 2020</h4>
+    </div>
+
+    <h2>Table of Contents</h2>
+
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#added">Added</a></li>
+      <li><a href="#removed">Removed</a></li>
+      <li><a href="#changed">Changed</a></li>
+      <li><a href="#fixed">Fixed</a></li>
+      <li><a href="#additional-information">Additional Information</a></li>
+    </ul>
+
+    <h2><a name="about" href="#about">About</a></h2>
+
+    <p>
+      <a href="https://github.com/jwilm/alacritty" target="_blank">Alacritty</a>
+      is a terminal emulator with a strong focus on simplicity and performance.
+      With such a strong focus on performance, included features are carefully
+      considered and you can always expect Alacritty to be blazingly fast. By
+      making sane choices for defaults, Alacritty requires no additional setup.
+      However, it does allow configuration of many aspects of the terminal.
+    </p>
+
+    <h2>
+      <a name="added" href="#added">Added</a>
+    </h2>
+    <ul>
+      <li>Default Command+N keybinding for SpawnNewInstance on macOS</li>
+      <li>Vi mode for regex search, copying text, and opening links</li>
+        <div class="center media">
+          <video preload="metadata" loop>
+            <source src="img/vi_mode.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="center media">
+          <video preload="metadata" loop>
+            <source src="img/search.mp4" type="video/mp4">
+          </video>
+        </div>
+      <li><code>CopySelection</code> action which copies into selection buffer on Linux/BSD</li>
+      <li>Option <code>cursor.thickness</code> to set terminal cursor thickness</li>
+        <div class="center media">
+            <img src="img/cursor_thickness.png">
+        </div>
+      <li>Font fallback on Windows</li>
+      <li>Support for Fontconfig embolden and matrix options</li>
+      <li>Opt-out compilation flag <code>winpty</code> to disable WinPTY support</li>
+      <li>Scrolling during selection when mouse is at top/bottom of window</li>
+        <div class="center media">
+          <video preload="metadata" loop>
+            <source src="img/autoscroll.mp4" type="video/mp4">
+          </video>
+        </div>
+      <li>Expanding existing selections using single, double and triple click with the right mouse button</li>
+        <div class="center media">
+          <video preload="metadata" loop>
+            <source src="img/expansion.mp4" type="video/mp4">
+          </video>
+        </div>
+      <li>Support for <code>gopher</code> and <code>gemini</code> URLs</li>
+      <li>Unicode 13 support</li>
+      <li>Option to run command on bell which can be set in <code>bell.command</code></li>
+      <li>Fallback to program specified in <code>$SHELL</code> variable on Linux/BSD if it is present</li>
+    </ul>
+
+    <h2>
+      <a name="removed" href="#removed">Removed</a>
+    </h2>
+    <ul>
+      <li>Environment variable <code>RUST_LOG</code> for selecting the log level</li>
+      <li>Deprecated <code>window.start_maximized</code> config field</li>
+      <li>Deprecated <code>render_timer</code> config field</li>
+      <li>Deprecated <code>persistent_logging</code> config field</li>
+    </ul>
+
+    <h2>
+      <a name="changed" href="#changed">Changed</a>
+    </h2>
+    <ul>
+      <li>Block cursor is no longer inverted at the start/end of a selection</li>
+      <li>Preserve selection on non-LMB or mouse mode clicks</li>
+      <li>Wayland client side decorations are now based on config colorscheme</li>
+      <li>Low resolution window decoration icon on Windows</li>
+      <li>Mouse bindings for additional buttons need to be specified as a number not a string</li>
+      <li>Don't hide cursor on modifier press with <code>mouse.hide_when_typing</code> enabled</li>
+      <li><code>Shift + Backspace</code> now sends <code>^?</code> instead of <code>^H</code></li>
+      <li>Default color scheme is now <code>Tomorrow Night</code> with the bright colors of <code>Tomorrow Night Bright</code></li>
+      <li>Set IUTF8 termios flag for improved UTF8 input support</li>
+      <li>Dragging files into terminal now adds a space after each path</li>
+      <li>Default binding replacement conditions</li>
+      <li>Adjusted selection clearing granularity to more accurately match content</li>
+      <li>To use the cell's text color for selection with a modified background, the <code>color.selection.text</code>
+      variable must now be set to <code>CellForeground</code> instead of omitting it</li>
+      <li>URLs are no longer highlighted without a clearly delimited scheme</li>
+      <li>Renamed config option <code>visual_bell</code> to <code>bell</code></li>
+      <li>Moved config option <code>dynamic_title</code> to <code>window.dynamic_title</code></li>
+    </ul>
+
+    <h2>
+      <a name="fixed" href="#fixed">Fixed</a>
+    </h2>
+    <ul>
+      <li>Selection not cleared when switching between main and alt grid</li>
+      <li>Freeze when application is invisible on Wayland</li>
+      <li>Paste from some apps on Wayland</li>
+      <li>Slow startup with Nvidia binary drivers on some X11 systems</li>
+      <li>Display not scrolling when printing new lines while scrolled in history</li>
+      <li>Regression in font rendering on macOS</li>
+      <li>Scroll down escape (<code>CSI Ps T</code>) incorrectly pulling lines from history</li>
+      <li>Dim escape (<code>CSI 2 m</code>) support for truecolor text</li>
+      <li>Incorrectly deleted lines when increasing width with a prompt wrapped using spaces</li>
+      <li>Documentation for class in <code>--help</code> missing information on setting general class</li>
+      <li>Linewrap tracking when switching between primary and alternate screen buffer</li>
+      <li>Preservation of the alternate screen's saved cursor when swapping to primary screen and back</li>
+      <li>Reflow of cursor during resize</li>
+      <li>Cursor color escape ignored when its color is set to inverted in the config</li>
+      <li>Fontconfig's <code>autohint</code> and <code>hinting</code> options being ignored</li>
+      <li>Ingoring of default FreeType properties</li>
+      <li>Alacritty crashing at startup when the configured font does not exist</li>
+      <li>Font size rounding error</li>
+    </ul>
+
+    <h2><a name="additional-information" href="#additional-information">Additional Information</a></h2>
+
+    <p>
+      Detailed installation instructions can be found in
+      <a href="https://github.com/alacritty/alacritty#installation">
+        Alacritty's GitHub README.
+      </a>
+    </p>
+
+    <p>
+      The full changelog including all previous versions can be found
+      <a href="https://github.com/jwilm/alacritty/blob/v0.5.0/CHANGELOG.md">here</a>.
+    </p>
+  </body>
+</html>
