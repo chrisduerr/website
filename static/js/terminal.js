@@ -99,7 +99,7 @@ function cd(command) {
 
     // Change to root when running just "cd"
     if (dir === "/") {
-        open_link("index", current_tab);
+        open_link("/", current_tab);
         return;
     }
 
