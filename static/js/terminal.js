@@ -14,8 +14,13 @@ drwxr-xr-x  2 chris chris 4.0K May  5 19:27 <span class=\"dir\">..</span>\
 ";
 var directory = "drwx--x--x  2 chris chris 4.0K Jan  1 00:07 <span class=\"dir\">";
 var symlink =   "lrwxrwxrwx  1 chris chris    4 May  4 12:33 <span class=\"symlink\">";
-var pages = ["/about", "/projects"];
 var commands = ["help", "clear", "back", "forward", "ls", "cd"];
+
+// Directory tree.
+var tree = {
+    about: undefined,
+    projects: undefined,
+};
 
 var command_history = [""];
 var history_offset = 0;
@@ -99,6 +104,7 @@ function cd(command) {
     }
 
     // Open an internal page
+    var pages = tree_nodes(tree);
     for (var i = 0; i < pages.length; i++) {
         if (pages[i] === dir) {
             // Trim "/" before opening "/projects"|"/about"
@@ -148,37 +154,7 @@ function ls(command) {
     }
     var dir = parse_dir(command[1]);
 
-    // List available pages in index
-    if (dir === "/") {
-        var text = "total " + (pages.length * 4 + 8) + "K";
-        text += dir_head;
-        for(var i = 0; i < pages.length; i++) {
-            text += "<br>" + directory + pages[i].substring(1) + "</span>";
-        }
-        stdout.innerHTML = replace_whitespace(text);
-        return;
-    }
-
-    // Show available links of target directory
-    if (pages.includes(dir)) {
-        var text = "total 8K";
-        text += dir_head;
-
-        // Show all available symlinks
-        var available_links = links[dir];
-        if (available_links !== undefined)
-        {
-            for (var i = 0; i < available_links.length; i++) {
-                text += "<br>" + symlink + available_links[i]["title"] +
-                    "</span> -> " + available_links[i]["url"];
-            }
-        }
-
-        stdout.innerHTML = replace_whitespace(text);
-        return;
-    }
-
-    // Show symlink targets
+    // Show target URL when used directly on a symlink
     var target_dir = parse_dir(dir + "/..");
     var available_links = links[target_dir];
     if (available_links !== undefined) {
@@ -192,9 +168,47 @@ function ls(command) {
         }
     }
 
-    // No directory found
-    stdout.innerHTML =
-        "ls: cannot access '" + dir + "': No such file or directory";
+    // Find the target directory in our tree
+    var segments = dir.split("/").filter(segment => segment.length > 0);
+    var node = tree;
+    for (var i = 0; i < segments.length; i++) {
+        if (node && node.hasOwnProperty(segments[i])) {
+            node = node[segments[i]];
+        } else {
+            // Directory does not exist
+            stdout.innerHTML =
+                "ls: cannot access '" + dir + "': No such file or directory";
+            return;
+        }
+    }
+
+    // Child pages of the target directory
+    var pages = [];
+    if (node) {
+        pages = Object.keys(node);
+    }
+
+    // Symlinks of the target directory
+    var available_links = [];
+    if (links.hasOwnProperty(dir) && links[dir] !== undefined) {
+        available_links = links[dir];
+    }
+
+    var text = "total " + (pages.length * 4 + 8) + "K";
+    text += dir_head;
+
+    // Add subpages
+    for(var i = 0; i < pages.length; i++) {
+        text += "<br>" + directory + pages[i] + "</span>";
+    }
+
+    // Add symlinks
+    for (var i = 0; i < available_links.length; i++) {
+        text += "<br>" + symlink + available_links[i]["title"] +
+            "</span> -> " + available_links[i]["url"];
+    }
+
+    stdout.innerHTML = replace_whitespace(text);
 }
 
 // Return the canonical version of a directory
@@ -293,15 +307,43 @@ function complete() {
         input.value = input.value + "/";
     }
     else {
-        // Complete pages
-        let real_dir = parse_dir(command[1]);
-        for (var i = 0; i < pages.length; i++) {
-            // Make sure it starts with it, but is not a complete match
-            if (pages[i].substring(0, pages[i].length - 1).startsWith(real_dir)
+        // Get normalized path without removed trailing "/"
+        var real_dir = parse_dir(command[1]);
+        if (command[1].endsWith("/") && !real_dir.endsWith("/")) {
+            real_dir += "/";
+        }
+
+        // Find last fully matching node in directory tree
+        var segments = real_dir.split("/").slice(1);
+        var node = tree;
+        for (var i = 0; i < segments.length; i++) {
+            if (node && node.hasOwnProperty(segments[i])) {
+                node = node[segments[i]];
+
+                // Add trailing slash if we're at a full match without one
+                if (i + 1 === segments.length) {
+                    matches.push(command[0] + " " + command[1] + "/");
+                    node = undefined;
+                }
+            } else {
+                // No match if we didn't even reach the last segment
+                if (i + 1 != segments.length) {
+                    node = undefined;
+                }
+                break;
+            }
+        }
+
+        // Complete the last segment using the available child nodes
+        for (var child in node) {
+            var last_segment = segments[segments.length - 1];
+            if (last_segment == undefined
+                // Make sure it starts with it, but is not a complete match
+                || child.substring(0, child.length - 1).startsWith(last_segment)
                 // Is exact match and doesn't end with "/"
-                || (pages[i] == real_dir && !command[1].endsWith("/")))
+                || (child == last_segment && !command[1].endsWith("/")))
             {
-                matches.push(command[0] + " " + replace_crumb(command[1], pages[i]) + "/");
+                matches.push(command[0] + " " + replace_crumb(command[1], child) + "/");
             }
         }
 
@@ -466,20 +508,11 @@ document.addEventListener('keydown', keydown, true);
 
 // Set the working directory to the current page
 function set_working_dir() {
-    var loc = document.location.href;
-    var index = loc.lastIndexOf("/");
-    if (index !== -1) {
-        var page = "/" + loc.substring(index + "/".length);
+    working_dir = document.location.pathname;
 
-        var elem = document.getElementById("ps1");
-        if (elem !== null) {
-            if (pages.includes(page)) {
-                elem.innerHTML = page + " $";
-                working_dir = page;
-            } else {
-                elem.innerHTML = "/ $";
-            }
-        }
+    var elem = document.getElementById("ps1");
+    if (elem !== null) {
+        elem.innerHTML = working_dir + " $";
     }
 }
 set_working_dir();
@@ -520,15 +553,31 @@ function page_links_callback(page, responseText) {
     }
 }
 
+function tree_nodes(object) {
+    if (object == undefined) {
+        return [];
+    }
+
+    var paths = [];
+    for (var child in object) {
+        paths.push("/" + child);
+
+        var child_paths = tree_nodes(object[child]);
+        paths = paths.concat(child_paths.map(paths => "/" + child + paths));
+    }
+
+    return paths;
+}
+
 // Asynchronously load links + link titles for every page
 function load_links() {
-    for (var i = 0; i < pages.length; i++) {
+    var nodes = tree_nodes(tree);
+    for (var i = 0; i < nodes.length; i++) {
         // Synchronously send a request to get the page
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", pages[i], false);
+        xmlHttp.open("GET", nodes[i], false);
         xmlHttp.send(null);
-        page_links_callback(pages[i], xmlHttp.responseText);
+        page_links_callback(nodes[i], xmlHttp.responseText);
     }
 }
 load_links();
-
