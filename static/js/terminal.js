@@ -539,11 +539,11 @@ function page_links_callback(page, responseText) {
         links[page] = [];
     }
     for (var i = 0; i < link_tags.length; i++) {
-        var title = link_tags[i].getElementsByClassName("link-title");
-        if (title.length == 1) {
+        var title = link_tags[i].atttributes["title"];
+        if (title) {
             var link = {};
             link["url"] = link_tags[i].href;
-            link["title"] = title[0].innerHTML;
+            link["title"] = title.value;
             links[page].push(link);
         }
     }

@@ -99,11 +99,6 @@ a, a:visited {
   width: 100%;
 }
 
-/* Hidden text for getting file names for links */
-.link-title {
-  display: none;
-}
-
 /* Syntax highlighting for `ls` output */
 .dir {
   color: #6a9fb5;
