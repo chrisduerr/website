@@ -539,7 +539,7 @@ function page_links_callback(page, responseText) {
         links[page] = [];
     }
     for (var i = 0; i < link_tags.length; i++) {
-        var title = link_tags[i].atttributes["title"];
+        var title = link_tags[i].attributes["title"];
         if (title) {
             var link = {};
             link["url"] = link_tags[i].href;
