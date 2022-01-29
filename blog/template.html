@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Christian Dürr</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Christian Dürr's personal blog">
+    <meta name="viewport" content="width=device-width">
+    <meta name="author" content="Christian Dürr">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/small.css">
+    <link rel="stylesheet" href="../../css/blog.css">
+    <title>$title$</title>
+  </head>
+  <body class="hcenter">
+    <main>
+      <header>
+        <h1>$title$</h1>
+        <b>$date$</b>
+      </header>
+
+$body$
+    </main>
+
+    <div class="terminal-container small">
+      <div class="stdout-container">
+        <code id="stdout" class="stdout small">
+          If you want to experience this website properly, please enable JavaScript.
+          <br><br>
+          Available Pages: <a href="/index">Index</a> | <a href="/about">About</a> | <a href="/projects">Projects</a>
+        </code>
+      </div>
+      <form onsubmit="return submit_command()" class="terminal-form small">
+        <nobr id="ps1">~ $$</nobr>
+        <input type="text" name="command" id="terminal-input" autocomplete="off">
+      </form>
+    </div>
+  <script type="text/javascript" src="../../js/terminal.js"></script>
+  </body>
+</html>

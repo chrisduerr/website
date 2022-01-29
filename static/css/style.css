@@ -61,6 +61,10 @@ a, a:visited {
 /* ------------------------ */
 
 .terminal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
   background-color: #262626;
 }
 
@@ -68,7 +72,6 @@ a, a:visited {
   font-family: monospace;
   align-items: center;
   display: flex;
-  height: 15%;
 }
 
 /* Terminal output */
@@ -76,7 +79,6 @@ a, a:visited {
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
-  height: 85%;
 }
 
 .stdout {

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Christian Dürr</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Christian Dürr's personal blog">
+    <meta name="viewport" content="width=device-width">
+    <meta name="author" content="Christian Dürr">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/small.css">
+    <link rel="stylesheet" href="../../css/blog.css">
+    <title>AARCH64 Cross-Compilation with Rust</title>
+  </head>
+  <body class="hcenter">
+    <main>
+      <header>
+        <h1>AARCH64 Cross-Compilation with Rust</h1>
+        <b>Jan 29, 2022</b>
+      </header>
+
+<p>Over the past days I’ve been trying to setup cross-compilation for my Wayland phone compositor <a href="https://github.com/chrisduerr/catacomb">catacomb</a>. Since it was written in Rust for my PinePhone, I’m cross-compiling from my x86_64 Archlinux desktop for my aarch64 ALARM phone.</p>
+<p>While there are many projects out there using containers, virtual machines, or emulators to provide a one-stop cross-compilation solution, my goal was to set this all up without having to install any kind of emulation software.</p>
+<h2 id="synopsis">Synopsis</h2>
+<p>For cross-compiling anything that relies on system libraries, one generally needs three things: A compiler capable of generating code for the target architecture, a linker, and a set of libraries to compile against.</p>
+<h2 id="the-compiler">The compiler</h2>
+<p>Since we’re using Rust, this step is simple. All we need to do is install the target with <code>rustup</code> using <code>rustup target add aarch64-unknown-linux-gnu</code>.</p>
+<h2 id="the-linker">The linker</h2>
+<p>With aarch64 on Archlinux, the required toolchain is available in the official repositories using the <code>aarch64-linux-gnu-gcc</code> package. However since the glibc versions of Archlinux and ALARM can be out of date, it might be necessary to downgrade this package to the glibc version available in ALARM.</p>
+<h2 id="first-success">First success</h2>
+<p>Once the compiler and linker are setup with matching glibc versions, it should be possible to cross-compile any Rust program that doesn’t link against other system libraries:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> new hello_world</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> hello_world</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">RUSTFLAGS</span><span class="op">=</span><span class="st">&quot;-C linker=aarch64-linux-gnu-gcc&quot;</span> <span class="ex">cargo</span> build <span class="at">--target</span><span class="op">=</span>aarch64-unknown-linux-gnu</span></code></pre></div>
+<p>The executable can then be copied from <code>target/aarch64-unknown-linux-gnu/</code> to the target system and should output <code>Hello, World!</code> when invoked.</p>
+<h2 id="the-sysroot">The sysroot</h2>
+<p>While this is enough to build smaller Rust projects, anything linking against system libraries will fail to compile. For this we need a set of libraries compatible with our target architecture.</p>
+<p>Gentoo’s stage3 is probably one of the easiest ways to acquire a minimal Linux root for several architectures, however this will likely come with a pretty recent glibc version and make installing new libraries difficult.</p>
+<p>If your target is Debian, <code>debootstrap</code> is a nice tool available on several distros which allows downloading a root for your target architecture from the Debian mirrors.</p>
+<p>Since my desktop runs Archlinux, I’ve decided to install ALARM on my phone to help with compatibility. Unfortunately, as a result none of these approaches will work, due to incompatible glibc versions. Instead I’ve decided to just copy the necessary files from my phone using <a href="https://github.com/chrisduerr/catacomb/blob/d9d655e54e55d0311719cd1f5255929e63ee4e90/create_sysroot.sh">an rsync script</a>.</p>
+<p>This also makes it simple to install all necessary dependencies on the target machine and then just re-run the script to update the sysroot.</p>
+<h2 id="linker-configuration">Linker configuration</h2>
+<p>To use the sysroot, we need to pass the <code>--sysroot</code> flag to our linker, which can be done by adding <code>-C link-arg=--sysroot=&lt;SYSROOT_PATH&gt;</code> to our <code>RUSTFLAGS</code>.</p>
+<p>Since many projects also make use of <code>pkgconfig</code>, we’ll have to ensure that it is using the sysroot by setting the following environment variables:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">PKG_CONFIG_LIBDIR</span><span class="op">=</span><span class="st">&quot;&lt;SYSROOT_PATH&gt;/usr/lib/pkgconfig:&lt;SYSROOT_PATH&gt;/usr/share/pkgconfig&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">PKG_CONFIG_SYSROOT_DIR</span><span class="op">=</span><span class="st">&quot;&lt;SYSROOT_PATH&gt;&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">PKG_CONFIG_ALLOW_CROSS</span><span class="op">=</span>true</span></code></pre></div>
+<p>Then we can go ahead and build our project. An exemplary buildscript is available <a href="https://github.com/chrisduerr/catacomb/blob/d9d655e54e55d0311719cd1f5255929e63ee4e90/build.sh">here</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">RUSTFLAGS</span><span class="op">=</span><span class="st">&quot;-C linker=aarch64-linux-gnu-gcc -C link-arg=--sysroot=&lt;SYSROOT_PATH&gt;&quot;</span> <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">cargo</span> build <span class="at">--target</span><span class="op">=</span>aarch64-unknown-linux-gnu</span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>While this approach might not work for bigger disparities between host and target platform, it does work well just compiling for aarch64 without relying on extra tooling.</p>
+    </main>
+
+    <div class="terminal-container small">
+      <div class="stdout-container">
+        <code id="stdout" class="stdout small">
+          If you want to experience this website properly, please enable JavaScript.
+          <br><br>
+          Available Pages: <a href="/index">Index</a> | <a href="/about">About</a> | <a href="/projects">Projects</a>
+        </code>
+      </div>
+      <form onsubmit="return submit_command()" class="terminal-form small">
+        <nobr id="ps1">~ $</nobr>
+        <input type="text" name="command" id="terminal-input" autocomplete="off">
+      </form>
+    </div>
+  <script type="text/javascript" src="../../js/terminal.js"></script>
+  </body>
+</html>

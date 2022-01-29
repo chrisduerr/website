@@ -20,6 +20,9 @@ var commands = ["help", "clear", "back", "forward", "ls", "cd"];
 var tree = {
     about: undefined,
     projects: undefined,
+    blog: {
+        "cross-compilation": undefined,
+    },
 };
 
 var command_history = [""];

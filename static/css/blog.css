@@ -1,0 +1,121 @@
+body {
+    font-size: 1.2em;
+    height: 100%;
+    width: 100%;
+}
+
+header h1 {
+    margin-bottom: 0;
+}
+
+main {
+    padding: 25px;
+    max-width: 1000px;
+    width: 75%;
+}
+
+.blog-entry-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Syntax highlighting */
+
+code {
+    background-color: #262626;
+}
+
+pre {
+    margin: unset;
+    border-left: 3px solid #752a2a;
+    background-color: #262626;
+    padding: 15px;
+}
+
+/* Alert */
+code span.al { color: #ac4242; }
+
+/* Annotation */
+code span.an { color: #f4bf75; font-weight: bold; }
+
+/* Attribute */
+code span.at { color: #6a9fb5; }
+
+/* BaseN */
+code span.bn { color: #aa759f; }
+
+/* BuiltIn */
+code span.bu { color: #90a959; }
+
+/* ControlFlow */
+code span.cf { color: #6a9fb5; }
+
+/* Char */
+code span.ch { color: #aa759f; }
+
+/* Constant */
+code span.cn { color: #aa759f; font-weight: bold; }
+
+/* Comment */
+code span.co { color: #666666; }
+
+/* CommentVar */
+code span.cv { color: #666666; font-weight: bold; }
+
+/* Documentation */
+code span.do { color: #666666; }
+
+/* DataType */
+code span.dt { color: #6a9fb5; }
+
+/* DecVal */
+code span.dv { color: #6a9fb5; }
+
+/* Error */
+code span.er { color: #ac4242; }
+
+/* Extension */
+code span.ex { }
+
+/* Float */
+code span.fl { color: #aa759f; }
+
+/* Function */
+code span.fu { color: #ac4242; }
+
+/* Import */
+code span.im { color: #6a9fb5; }
+
+/* Information */
+code span.in { color: #90a959; font-weight: bold; }
+
+/* Keyword */
+code span.kw { color: #6a9fb5; }
+
+/* Operator */
+code span.op { color: #6a9fb5; }
+
+/* Other */
+code span.ot { color: #90a959; }
+
+/* Preprocessor */
+code span.pp { color: #90a959; font-weight: bold; }
+
+/* SpecialChar */
+code span.sc { color: #f4bf75; }
+
+/* SpecialString */
+code span.ss { color: #f4bf75; }
+
+/* String */
+code span.st { color: #f4bf75; }
+
+/* Variable */
+code span.va { color: #90a959; }
+
+/* VerbatimString */
+code span.vs { color: #f4bf75; }
+
+/* Warning */
+code span.wa { color: #f4bf75; font-weight: bold; }
