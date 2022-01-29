@@ -200,8 +200,9 @@ function ls(command) {
 
     // Add symlinks
     for (var i = 0; i < available_links.length; i++) {
+        var url = available_links[i]["url"];
         text += "<br>" + symlink + available_links[i]["title"] +
-            "</span> -> " + available_links[i]["url"];
+            "</span> -> " + "<a href=\"" + url + "\">" + url + "</a>";
     }
 
     stdout.innerHTML = replace_whitespace(text);
