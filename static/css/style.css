@@ -41,6 +41,10 @@ a, a:visited {
   color: #ac4142;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 /* ---------------------- */
 /* --- Subpage Styles --- */
 /* ---------------------- */
