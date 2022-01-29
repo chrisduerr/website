@@ -100,18 +100,11 @@ function cd(command) {
         current_tab = false;
     }
 
-    // Change to root when running just "cd"
-    if (dir === "/") {
-        open_link("/", current_tab);
-        return;
-    }
-
     // Open an internal page
-    var pages = tree_nodes(tree);
+    var pages = tree_nodes(tree).concat(["/"]);
     for (var i = 0; i < pages.length; i++) {
         if (pages[i] === dir) {
-            // Trim "/" before opening "/projects"|"/about"
-            open_link(pages[i].substring(1), current_tab);
+            open_link(pages[i], current_tab);
             return;
         }
     }
