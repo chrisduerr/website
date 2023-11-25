@@ -30,7 +30,6 @@ function prev_projects() {
         update_projects(true);
     }
 }
-document.getElementById("projects-prev").addEventListener('click', prev_projects);
 
 // Cycle to next projects
 function next_projects() {
@@ -45,12 +44,10 @@ function next_projects() {
         update_projects(true);
     }
 }
-document.getElementById("projects-next").addEventListener('click', next_projects);
 
 // Update the visibility of all currently active projects
 function update_projects(visible) {
     for (var i = projects_offset; i < (projects_offset + projects_step); i++) {
-        console.log("SETTING " + i + " TO " + visible);
         var proj = document.getElementById("project-" + i);
         var sep = document.getElementById("project-" + i + "-separator");
         set_visibility(proj, visible)
@@ -71,11 +68,18 @@ function set_visibility(item, visible) {
     }
 }
 
-// Remove link from prev/next because that's for non-JS
-document.getElementById("projects-prev").innerHTML = "&lt;"
-document.getElementById("projects-next").innerHTML = "&gt;"
+// Ignore non-JS project navigation for clicks with JS enabled.
+document.getElementById("projects-prev").addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    prev_projects();
+});
+document.getElementById("projects-next").addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    next_projects();
+});
 
 // Set terminal hint to display keyboard shortcuts
 var stdout = document.getElementById("stdout")
 stdout.innerHTML = "You can use &lt;Left&gt;/&lt;Right&gt; to navigate this page";
-
