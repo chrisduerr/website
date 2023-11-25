@@ -50,6 +50,7 @@ document.getElementById("projects-next").addEventListener('click', next_projects
 // Update the visibility of all currently active projects
 function update_projects(visible) {
     for (var i = projects_offset; i < (projects_offset + projects_step); i++) {
+        console.log("SETTING " + i + " TO " + visible);
         var proj = document.getElementById("project-" + i);
         var sep = document.getElementById("project-" + i + "-separator");
         set_visibility(proj, visible)

@@ -15,6 +15,76 @@
         <a href="/projects"><div id="projects-prev">&lt;</div></a>
         <a href="/projects"><div id="projects-next">&gt;</div></a>
         <div>
+          <div class="project-container" id="project-0" style="display: none">
+            <img src="../img/alacritty.png" class="project-image">
+            <div class="project-text">
+              <div class="project-name">
+                Alacritty
+              </div>
+              <div class="project-description">
+                Alacritty is across-platform, GPU-accelerated terminal emulator written in Rust.
+                The focus of alacritty are speed and simplicity. Using the GPU to accelerate drawing
+                makes it one of the fastest terminal emulators availabe.
+                Alacritty was created by jwilm and I'm currently helping out by contributing to the project.
+              </div>
+              <div class="columns">
+                <a href="https://github.com/alacritty/alacritty" title="alacritty-upstream">
+                  Upstream GitHub
+                </a>
+                <a href="https://github.com/chrisduerr/alacritty" title="alacritty-fork">
+                  Fork GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="separator" id="project-0-separator" style="display: none"></div>
+        <div>
+          <div class="project-container" id="project-1" style="display: none">
+            <img src="../img/catacomb.png" class="project-image">
+            <div class="project-text">
+              <div class="project-name">
+                Catacomb
+              </div>
+              <div class="project-description">
+                Catacomb is a mobile compositor and desktop environment aimed at
+                providing a poweruser-friendly Wayland DE without excessively
+                relying on terminal scripts to tie everything together.
+              </div>
+              <div class="columns">
+                <a href="https://github.com/catacombing/catacomb" target="_blank" title="userstyles-github">
+                  Compositor GitHub
+                </a>
+                <a href="https://github.com/orgs/catacombing/repositories" target="_blank" title="userstyles-github">
+                  Project GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="separator" id="project-1-separator" style="display: none"></div>
+        <div>
+          <div class="project-container" id="project-2" style="display: none">
+            <img src="../img/dotfiles.png" class="project-image">
+            <div class="project-text">
+              <div class="project-name">
+                Dotfiles
+              </div>
+              <div class="project-description">
+                Dotfiles are a big part of every linux machine. It's how configuration files are stored. So if you want to know how I have my applications setup, or how my desktop looks, you'll probably find an answer for your questions in my dotfiles repository.
+              </div>
+              <div class="columns">
+                <a href="https://github.com/chrisduerr/dotfiles" title="dotfiles-github">
+                  GitHub
+                </a>
+                <a href="https://gitlab.com/chrisduerr/dotfiles" title="dotfiles-gitlab">
+                  GitLab
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
           <div class="project-container" id="project-3">
             <img src="../img/userstyles.png" class="project-image">
             <div class="project-text">
@@ -35,7 +105,7 @@
             </div>
           </div>
         </div>
-        <div class="separator" id="project-4-separator"></div>
+        <div class="separator" id="project-3-separator"></div>
         <div>
           <div class="project-container" id="project-4">
             <img src="../img/website.png" class="project-image">
@@ -75,7 +145,8 @@
         <input type="text" name="command" id="terminal-input" autocomplete="off">
       </form>
     </div>
-  <script type="text/javascript" src="../js/terminal.js"></script>
-  <script type="text/javascript" src="../js/projects.js"></script>
+    <script type="text/javascript" src="../js/terminal.js"></script>
+    <script type="text/javascript" src="../js/projects.js"></script>
+    <script type="text/javascript">projects_offset = 3;</script>
   </body>
 </html>
